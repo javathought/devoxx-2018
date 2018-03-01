@@ -1,0 +1,15 @@
+= devoxx-2018
+
+Hands-on Labs @ https://devoxx.fr[devoxx 2018] - Piratez mon application ... et sécurisez la.
+
+----
+Trouvez les failles d'un SinglePage App Angular et backend REST/java puis corrigez les.
+
+Vers l'OWASP et au-delà :
+
+▶️ Corriger les failles correspondant au Top 10 OWASP
+▶️ Corriger d'autres failles pour aller plus loin
+▶️ Automatiser les tests de sécurité sur son application
+----
+
+🔜 Vous trouverez ici tout le code et les binaires à télécharger
