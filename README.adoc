@@ -1,6 +1,6 @@
-= devoxx-2018
+= Piratez mon application ... et sécurisez la.
 
-Hands-on Labs @ https://devoxx.fr[devoxx 2018] - Piratez mon application ... et sécurisez la.
+Hands-on Labs @ https://devoxx.fr[devoxx 2018]
 
 ----
 Trouvez les failles d'un SinglePage App Angular et backend REST/java puis corrigez les.
@@ -13,3 +13,79 @@ Vers l'OWASP et au-delà :
 ----
 
 🔜 Vous trouverez ici tout le code et les binaires à télécharger
+
+:numbered:
+
+== Pré-requis
+
+1. Java Development Kit : jdk 8+ http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html[Oracle JDK 8]
+1. https://maven.apache.org/download.cgi[maven 3.3.9+] : Unzip to a directory of your choice and add it to the `PATH`
+1. npm 5.3+
+1. docker
+1. chrome
+1. chrome Driver
+1. IDE
+
+== Préparation
+
+----
+git clone https:://github.com/javathought/devoxx-2018
+----
+
+Vous pouvez importer le code dans votre IDE préféré comme un projet Maven -- __Référez vous à la documentation de votre IDE pour savoir comment l'importer__ --.
+
+_Pour Eclipse_
+
+Cliquez sur `File - Import …​ - Maven - Existing Maven Projects`
+
+Sélectionnez l'emplacement où vous avez cloné les sources.
+
+Cliquez sur `Finish and wait…​`
+
+_Pour IntelliJ_
+
+Cliquez sur `File - Open …​`
+
+Sélectionnez l'emplacement où vous avez cloné les sources.
+
+
+=== Récupération des dépendances
+
+----
+docker pull mysql/mysql-server:5.7
+mvn dependency:resolve
+cd owasp-angular
+npm update
+----
+
+=== Installation images ELK
+
+----
+docker pull docker.elastic.co/elasticsearch/elasticsearch-platinum:6.2.3
+docker pull docker.elastic.co/kibana/kibana:6.2.3
+
+----
+
+=== Création de la base de données
+
+=== Lancement de l'application
+
+----
+mvn exec:java -Dexec.mainClass="io.github.javathought.devoxx.Main" -pl owasp-jersey
+cd owasp-angular
+npm run lite
+----
+
+=== Génération du guide
+
+----
+mvn generate-resources
+----
+
+
+
+== Allons-y
+
+Le Lab peut commencer
+link:steps.html[Pas à pas]
+

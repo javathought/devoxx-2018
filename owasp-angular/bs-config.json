@@ -1,0 +1,8 @@
+{
+    "port": 8000,
+    "files" : ["./src/**/*.{js, html, css}"],
+    "watchOptions": { "ignored": "node_modules" },
+      "server" : { "baseDir" : "." },
+    "https" : true,
+    "browser" : ["google-chrome"]
+}

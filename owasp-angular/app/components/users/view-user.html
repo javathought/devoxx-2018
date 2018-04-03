@@ -1,0 +1,70 @@
+<div class="row">
+
+    <legend>Détails de l'utilisateur</legend>
+    <form name="userForm" class="form-horizontal" novalidate>
+
+            <div class="form-group" ng-class="{'has-error' : userForm.name.$invalid}">
+                <label for="user" class="col-sm-2">Nom *</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" name="name" id="user" placeholder="Nom" ng-model="user.name"
+                  required ng-maxlength="25" pattern="[a-zA-Z0-9\.-@]+"
+                  ng-disabled="!profileWrite">
+                  <ng-messages for="userForm.name.$error" role="alert">
+                      <ng-message when="required" class="help-block">
+                          Le nom est obligatoire.</ng-message>
+                      <ng-message when="maxlength" class="help-block">
+                          La longueur maximale du nom est de 25 caractères.</ng-message>
+                  <ng-message when="pattern" class="help-block">
+                      Les caractères autorisés sont les lettres, les chiffres, l'espace et -.</ng-message>
+                  </ng-messages>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="admin" ng-disabled="!profileWrite"> Administrateur
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+          <div class="form-group" ng-class="{'has-error' : userForm.password.$invalid}">
+              <label for="password" class="col-sm-2">Mot de passe *</label>
+              <div class="col-sm-10">
+                <input type="password" class="form-control" name="password" placeholder="Mot de passe" ng-model="user.key"
+                  ng-minlength="4" >
+                <ng-messages for="userForm.password.$error" role="alert">
+                    <ng-message when="minlength" class="help-block">
+                        La longueur minimale du mot de passe est de 8 caractères.</ng-message>
+                </ng-messages>
+              </div>
+          </div>
+
+        <div class="form-group" ng-class="{'has-error' : userForm.confirmation.$invalid}">
+            <label for="confirmation" class="col-sm-2">Confirmation *</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control"  name="confirmation" placeholder="Confirmation du mot de passe" ng-model="confirmation"
+                ui-validate=" '$value==user.key' " ui-validate-watch=" 'user.key' " >
+              <ng-messages for="userForm.confirmation.$error" role="alert">
+                  <!--
+                  <ng-message when-exp="confirmation!=password" class="help-block">
+                      La confirmation doit être égale au mot de passe.</ng-message>
+                    -->
+                    <ng-message when="validator" class="help-block">La confirmation doit être égale au mot de passe.</ng-message>
+              </ng-messages>
+            </div>
+          </div>
+
+        <footer class="form-actions pull-right">
+            <a href="#/users" class="btn btn-default ">Annuler</a>
+            <a class="btn btn-primary " 
+            ng-disabled="userForm.$invalid || ($scope.user.key != $scope.confirmation)"
+            ng-click="userForm.$invalid ? null : saveUser()">{{getBtnLabel()}}</a>
+        </footer>
+
+    </form>
+
+
+</div>
