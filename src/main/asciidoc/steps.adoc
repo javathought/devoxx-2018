@@ -405,7 +405,7 @@ Supprimez vos droits administrateurs puis essayez d'accéder et/ou modifier les 
 
 XSS + passer en cookie
 
-== Insecure deserializatin
+== Insecure deserialization
 
 == Composants vulnérables
 
@@ -468,11 +468,17 @@ Monitorez cette log dans ELK.
 Utilisez ces commandes pour lancer les conteneurs Elastic et Kibana
 ----
 docker network create elastic
-docker run --network=elastic -e ELASTIC_PASSWORD=MagicWord -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch-platinum:6.2.3
+docker run --network=elastic -e ELASTIC_PASSWORD=MagicWord --name elasticsearch -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch-platinum:6.2.3
 docker run --network=elastic -e ELASTICSEARCH_PASSWORD=MagicWord -p 5601:5601 docker.elastic.co/kibana/kibana:6.2.3
+docker run --network=elastic -e XPACK_MONITORING_ELASTICSEARCH_PASSWORD=MagicWord -e XPACK_MONITORING_ELASTICSEARCH_USERNAME=elastic --rm -it -v ~/workspace/devoxx/devoxx-2018/logs:/usr/logs -v ~/pipeline/:/usr/share/logstash/pipeline/ docker.elastic.co/logstash/logstash:6.2.3
 
 ----
 
+== click jacking  et headers
+
+
+
+== ajouter des tests
 
 
 == Agmentez encore vos privilèges
@@ -480,24 +486,6 @@ docker run --network=elastic -e ELASTICSEARCH_PASSWORD=MagicWord -p 5601:5601 do
 == 2FA
 
 == Reinit password
-
-
-
-
-
-
-
-
-
-== XXE
-
-== click jacking  et headers
-
-... ????
-
-== Mettre en place une authent forte
-
-== ajouter des tests
 
 
 [NOTE]

@@ -63,7 +63,7 @@ npm update
 ----
 docker pull docker.elastic.co/elasticsearch/elasticsearch-platinum:6.2.3
 docker pull docker.elastic.co/kibana/kibana:6.2.3
-
+docker pull docker.elastic.co/logstash/logstash:6.2.3
 ----
 
 === Création de la base de données

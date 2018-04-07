@@ -2,7 +2,7 @@
 
   Fonctionnalité: Accès légitime au serveur
 
-    Contexte: L'utilisateur est légitimé
+    Contexte: L'utilisateur est légitime
       Quand l'utilisateur se connecte avec l'identifiant "legitime"
       Et l'utilisateur a le role "read"
 

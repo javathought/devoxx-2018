@@ -14,6 +14,25 @@
         </encoder>
     </appender>
 
+    <appender name="AUDIT" class="ch.qos.logback.core.FileAppender">
+        <file>logs/audit-backend.log</file>
+        <append>true</append>
+        <encoder>
+            <pattern>%date U:%mdc{user:-inconnu} R:%mdc{resource:-inconnu} A:%mdc{action:-inconnu} payload:%mdc{entity:-n/a} %msg%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+            <evaluator class="ch.qos.logback.classic.boolex.OnMarkerEvaluator">
+                <marker>AUDIT</marker>
+            </evaluator>
+            <onMatch>NEUTRAL</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+
+    <logger name="io.github.javathought.devoxx" level="INFO">
+        <appender-ref ref="AUDIT" />
+    </logger>
 
 
     <root level="trace">
