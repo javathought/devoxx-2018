@@ -1,0 +1,30 @@
+
+        service.HasRole = function(role) {
+          hasRole = findWithAttr($rootScope.globals.currentUser.roles, 'role', allowed) != -1;
+          if (! hasRole) $scope.alerts.push({type: 'danger', msg: 'Accès refusé', details: 'Vous n\'avez pas l\'habilitation pour cette fonction'});;
+          return hasRole;
+        };
+
+        function findWithAttr(array, attr, value) {
+            for(var i = 0; i < array.length; i += 1) {
+                if(array[i][attr] === value) {
+                    return i;
+                }
+            }
+            return -1;
+        };
+
+
+
+
+        resolve: {
+        authorize: ["AuthenticationService", "$location",
+        function(AuthenticationService, $location) {
+                      if (! AuthenticationService.hasRole("super"))
+                      {
+                        $location.path("/");
+                        throw 302; // THIS ERROR as HTTP 302 Found
+                      }
+                    }
+              ]
+        }})

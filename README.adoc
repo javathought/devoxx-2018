@@ -55,7 +55,11 @@ Sélectionnez l'emplacement où vous avez cloné les sources.
 docker pull mysql/mysql-server:5.7
 mvn dependency:resolve
 cd owasp-angular
-npm update
+npm install lite-server
+npm install
+cd  ../owasp-hacker
+npm install lite-server
+npm install
 ----
 
 === Installation images ELK

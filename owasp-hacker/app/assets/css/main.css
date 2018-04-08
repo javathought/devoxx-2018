@@ -1,0 +1,249 @@
+/**
+ * prevent the {{}} syntax bindings AngularJS is displayed briefly
+ * at page load
+ *
+ * Angular has a native implementation with attribute ngCloak
+ * but not active at application startup
+ *
+ * From :
+ * http://blogs.infinitesquare.com/b/seb/archives/pourquoi-il-ne-faut-pas-utiliser-ngcloak
+ * http://sebastienollivier.fr/blog/angularjs/pourquoi-il-ne-faut-pas-utiliser-ngcloak
+ *
+ */
+[deferred-cloak], [data-deferred-cloak], [x-deferred-cloak], .deferred-cloak {
+    display: none;
+}
+
+/* RESPONSIVE SIZE : ENHANCED FOR LARGE SCREEN : 1920px */
+/*ATTENTION : les résolutions doivent être classées par ordre croissant*/
+@media (min-width: 1400px) {
+    .container {
+        width: 1370px;
+    }
+}
+
+@media (min-width: 1600px) {
+    .container {
+        width: 1370px;
+    }
+}
+
+@media (min-width: 1800px) {
+    .container {
+        width: 1770px;
+    }
+}
+
+.navbar img {
+      /*min-height: 65px;*/
+      height:25px;
+      padding-right: 15px;
+}
+
+/* ********************************
+ * row modifications
+ * ********************************/
+
+ .margin-bottom-05 { margin-bottom: 5px; }
+ .margin-bottom-10 { margin-bottom: 10px; }
+ .margin-bottom-15 { margin-bottom: 15px; }
+ .margin-bottom-20 { margin-bottom: 20px; }
+ .margin-bottom-25 { margin-bottom: 25px; }
+ .margin-bottom-30 { margin-bottom: 30px; }
+
+/* ********************************
+ * Table modifications
+ * ********************************/
+/*.cell-strip{
+    background-color: #eee;
+}
+
+.cell-strip-darker{
+    background-color: #ccc;
+}*/
+
+/*.table > thead > tr > th.noborder {
+    border-top: 0px;
+    border-bottom: 0px;
+}*/
+
+/*.table > tbody > tr > td.noborder, .table > tbody > tr > th.noborder, .table > tfoot > tr > td.noborder, .table > tfoot > tr > th.noborder, .table > thead > tr > td.noborder, .table > thead > tr > th.noborder {
+    border-top: 0px;
+    border-bottom: 0px;
+}*/
+
+
+/* ================================================================================*/
+/* USAGE VERIFIED UP TO HERE
+/* ================================================================================*/
+
+.alert-detail {
+    margin-left: 30px;
+}
+
+/* ================================================================================*/
+/* TEST FROM FIR
+/* ================================================================================*/
+
+/* To align vertically text with button in lines*/
+.row .btn-action {
+      margin: 20px 0;
+}
+
+.table tbody>tr>td {
+    vertical-align: middle;
+}
+
+.minitable-right {
+    margin:40px 0 20px 0;
+    padding:10px;
+    float:right;
+    width:auto;
+}
+
+.minitable-left {
+    margin:40px 0 20px 0;
+    padding:10px;
+    float:left;
+    width:auto;
+}
+
+.minitable td {
+    border-top: 0 !important;
+    padding:0 5px;
+    line-height: 1 !important;
+}
+
+.minitable .delim {
+    border-right: 1px solid #ddd;
+    padding-right:15px;
+    padding-left:0;
+}
+
+.minitable .head {
+    font-weight: bold;
+    padding-left:15px;
+}
+
+/* ================================================================================*/
+/* END TEST
+/* ================================================================================*/
+
+
+body>.container {
+    padding: 10px 15px 0;
+}
+
+
+/*  Collapsible panel */
+
+.panel-heading span {
+    margin-top: -20px;
+    font-size: 15px;
+}
+.row {
+    padding: 0 10px;
+}
+.clickable {
+    cursor: pointer;
+}
+
+.panel-body {
+    background-color: #ecf0f5;
+}
+
+
+.header {
+	background: #fff;
+	position: relative;
+	width: 100%;
+	z-index: 100;
+}
+
+.separator{
+    margin-top: 80px;
+    height: 10px;
+    background-color: red;
+}
+
+
+.logo {
+	left: 0;
+	position: relative;
+	top: 23px;
+	z-index: 10;
+}
+
+.navbar-default { //
+	background: transparent;
+}
+
+.navbar-default .navbar-nav>li>a { //
+	background: url("../images/sep.gif") left center no-repeat;
+}
+
+.dropdown-info > li {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: normal;
+    white-space: nowrap;
+}
+
+.table, .table-pagination {
+	font-size: 75%;
+}
+
+.table .table {
+    font-size: 100%;
+}
+
+.table-filter-combo {
+	width: 100px;
+}
+
+legend {
+    float:left;
+    margin-top:-20px;
+}
+legend + * {
+    clear:both;
+}
+
+
+.trueClass {
+    color: green;
+    font-weight: bold;
+}
+
+.falseClass {
+    color: red;
+    font-weight: bold;
+}
+.borderless > tbody > tr > td {
+    border: none;
+}
+.validation-pending {
+  color: orange;
+}
+
+.parent{
+    display:table;
+     width:100%;
+}
+.child{
+    display:table-cell;
+    vertical-align: top;
+    width:33%;
+    height: 125px;
+}
+
+.ng-scope.ng-active.matrix-messages {
+    height: 25px;
+}
+
+.table>tbody>tr>td.buttons, .table>tbody>tr>th.buttons, .table>tfoot>tr>td.buttons, .table>tfoot>tr>th.buttons,
+.table>thead>tr>td.buttons, .table>thead>tr>th.buttons, td.buttons {
+    padding-top: 2px;
+    padding-bottom: 2px;
+}

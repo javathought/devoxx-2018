@@ -55,6 +55,10 @@ public class Todo {
         return userId;
     }
 
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
+
     public String getSummary() {
         return summary;
     }

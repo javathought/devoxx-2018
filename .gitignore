@@ -76,3 +76,4 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 /owasp-angular/package-lock.json
+/owasp-hacker/node_modules/

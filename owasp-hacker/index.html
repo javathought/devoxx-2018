@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html ng-app="devoxxApp" lang="en">
+<head>
+    <!-- base href="/" -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="SHORTCUT ICON" href="app/assets/images/favicon.ico"/>
+
+    <title>DEVOXX</title>
+    <!-- <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" -->
+    <link rel="stylesheet" href="app/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="app/assets/css/font-awesome.min.css">
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="app/assets/css/sticky-footer-navbar.css" >
+    <link rel="stylesheet" href="app/assets/css/main.css" >
+    <link rel="stylesheet" href="app/assets/css/login-modal.css" >
+    <!--[if lt IE 9]>
+    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+<body ng-controller="MainController">
+<nav class="navbar navbar-default navbar-static-top">
+
+    <div class="container">
+      <ul class="nav navbar-nav navbar-right" data-deferred-cloak>
+      </ul>
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                    aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span> <span
+                    class="icon-bar"></span> <span class="icon-bar"></span> <span
+                    class="icon-bar"></span>
+            </button>
+            <div class="navbar-brand"><a href="/">
+              <span><img src="app/assets/images/1075135.png"></span></a>
+              Unsecured Web App</div>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown" ng-show="profileUser">
+                    <a href="#/todos" id="menu_todos">To Do's</a>
+                </li>
+                <li class="dropdown" ng-show="profileWrite">
+                  <a href="#/users">Admin</a>
+                </li>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown">
+                        <span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;
+                        <span id="connected_user">{{$root.globals.currentUser.name}}</span></a>
+
+                    <ul class="dropdown-menu dropdown-info" role="menu">
+                        <li><a href="#/users/{{$root.globals.currentUser.id}}">Profil</a></li>
+                        <li><a href="#/login">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container" data-deferred-cloak>
+  <div class="row">
+    <div class="col-md-12">
+      <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" dismiss-on-timeout='10000' close="closeAlert($index)">
+        {{alert.msg}}
+        <br />
+        {{alert.details}}
+        <div ng-repeat="detail in alert.details" ng-switch on="alert.type">
+          <div ng-switch-when='danger' class="alert-detail">{{detail.message}} / valeur erronnée : '{{detail.invalidValue}}'</div>
+        </div>
+      </uib-alert>
+    </div>
+  </div>
+
+</div>
+
+<div class="container" data-deferred-cloak>
+    <div class="alert alert-danger" role="alert"
+         ng-show="shownotallowed">
+        <!-- button type="button" class="hide" data-dismiss="alert"><span aria-hidden="true">&times;</span>
+            <span class="sr-only">Close</span></button -->
+        <div class="panel-heading">
+            <strong>Accès non autorisé</strong>
+        </div>
+        <div class="panel-body">Vous n'avez pas l'habilitation pour cette application.</div>
+    </div>
+</div>
+
+<div class="container" ui-view ng-show="!shownotallowed"></div>
+
+
+<footer class="footer">
+    <div class="container">
+        <p class="text-muted">Devoxx <span>2018</span> | Pascal Abaziou</p>
+    </div>
+</footer>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<script src="node_modules/jquery/dist/jquery.min.js"></script>
+<script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="node_modules/angular/angular.min.js"></script>
+<script src="node_modules/angular-ui-router/release/angular-ui-router.js"></script>
+<script src="node_modules/angular-resource/angular-resource.js"></script>
+<script src="node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
+<script src="node_modules/angular-ui-validate/dist/validate.min.js"></script>
+<script src="node_modules/angular-messages/angular-messages.min.js"></script>
+<script src="node_modules/angular-cookies/angular-cookies.min.js"></script>
+<script src="node_modules/angular-sanitize/angular-sanitize.min.js"></script>
+<!-- à externaliser dans des fichiers js -->
+<!-- Module Application JS -->
+<script src="app/main.module.js"></script>
+<script src="app/main.controller.js"></script>
+
+<script src="app/directives/directives.module.js"></script>
+
+<script src="app/services/services.js"></script>
+<script src="app/directives/directives.js"></script>
+
+<script src="app/components/home/home.controller.js"></script>
+<script src="app/components/todos/view-todo.controller.js"></script>
+
+</body>
+</html>
