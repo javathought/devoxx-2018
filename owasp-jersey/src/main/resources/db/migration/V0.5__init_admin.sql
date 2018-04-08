@@ -12,8 +12,6 @@ insert into devoxx_tia.users (uuid, name, password) values
 (x'8bff18edc2534950afea005c98fca49b', 'arthur.doe@example.com', '21bd12dc183f740ee76f27b78eb39c8ad972a757')
 ;
 
-601ff284d1e84214bc6847e15d74b24f
-
 insert into devoxx_tia.user_roles values
   (1, 1), (1,2),
   (2,2),

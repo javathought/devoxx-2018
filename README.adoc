@@ -23,7 +23,7 @@ Vers l'OWASP et au-delà :
 1. npm 5.3+
 1. docker
 1. chrome
-1. chrome Driver
+# 1. chrome Driver
 1. IDE
 
 == Préparation
@@ -61,12 +61,25 @@ npm update
 === Installation images ELK
 
 ----
+docker pull mysql:5.7
 docker pull docker.elastic.co/elasticsearch/elasticsearch-platinum:6.2.3
 docker pull docker.elastic.co/kibana/kibana:6.2.3
 docker pull docker.elastic.co/logstash/logstash:6.2.3
 ----
 
 === Création de la base de données
+
+----
+docker run --name devoxx-mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:5.7
+docker exec -i -t devoxx-mysql /bin/bash
+mysql -p
+create database devoxx_tia;
+CREATE USER 'devoxx'@'%';
+GRANT ALL PRIVILEGES ON devoxx_tia.* To 'devoxx'@'%' IDENTIFIED BY 'owasp-2017;';
+exit;
+exit
+mvn flyway:migrate -pl owasp-jersey
+----
 
 === Lancement de l'application
 
