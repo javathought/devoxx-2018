@@ -459,20 +459,49 @@ Mettez en place un logging systématique dédié à la sécurité sur les accès
 
 [id=reponse8,role=collapse]
 --
-  Utilisez le patch suivant :
+  Utilisez le patch suivant : `owasp-A10-2017-logging.patch
 --
 
+Mettez en place un logging systématique dédié à la sécurité sur les accès aux ressources REST.
 
-Monitorez cette log dans ELK.
+Monitorez cette log dans ELK. Utilisez ces commandes pour lancer les conteneurs Elastic et Kibana.
 
-Utilisez ces commandes pour lancer les conteneurs Elastic et Kibana
 ----
 docker network create elastic
 docker run --network=elastic -e ELASTIC_PASSWORD=MagicWord --name elasticsearch -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch-platinum:6.2.3
 docker run --network=elastic -e ELASTICSEARCH_PASSWORD=MagicWord -p 5601:5601 docker.elastic.co/kibana/kibana:6.2.3
 docker run --network=elastic -e XPACK_MONITORING_ELASTICSEARCH_PASSWORD=MagicWord -e XPACK_MONITORING_ELASTICSEARCH_USERNAME=elastic --rm -it -v ~/workspace/devoxx/devoxx-2018/logs:/usr/logs -v ~/pipeline/:/usr/share/logstash/pipeline/ docker.elastic.co/logstash/logstash:6.2.3
-
 ----
+
+Les logs générées peuvent contenir des informations sensibles. Modifiez les classes d'audit pour supprimer ces informations avant
+d'écrire la log.
+
+++++
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#astuce15" aria-expanded="false" aria-controls="collapseExample">
+  Indice 1
+</a>
+++++
+
+[id=astuce15,role=collapse]
+--
+ Dans le cas de la classe `AuthenticateResource`, le mot de passe va être loggué. Supprimez cette information du payload json.
+--
+
+Ajoutez l'IP d'origine, elle pourra permettre les actions suivantes:
+. identifier des scénarios d'attaque (tentaive de connexion sur plusieurs comptes à partir de la même  ip par exemple)
+. bannir une ip
+
+++++
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#astuce16" aria-expanded="false" aria-controls="collapseExample">
+  Indice 1
+</a>
+++++
+
+[id=astuce16,role=collapse]
+--
+
+--
+
 
 == click jacking  et headers
 

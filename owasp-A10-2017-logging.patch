@@ -1,0 +1,175 @@
+Index: owasp-jersey/src/main/java/io/github/javathought/devoxx/filters/AuditRequestFilter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- owasp-jersey/src/main/java/io/github/javathought/devoxx/filters/AuditRequestFilter.java	(date 1522872437000)
++++ owasp-jersey/src/main/java/io/github/javathought/devoxx/filters/AuditRequestFilter.java	(date 1522872437000)
+@@ -0,0 +1,112 @@
++package io.github.javathought.devoxx.filters;
++
++import org.glassfish.jersey.message.internal.ReaderWriter;
++import org.slf4j.Logger;
++import org.slf4j.LoggerFactory;
++import org.slf4j.MDC;
++
++import javax.annotation.Priority;
++import javax.ws.rs.Priorities;
++import javax.ws.rs.container.ContainerRequestContext;
++import javax.ws.rs.container.ContainerRequestFilter;
++import javax.ws.rs.container.ResourceInfo;
++import javax.ws.rs.core.Context;
++import javax.ws.rs.core.SecurityContext;
++import javax.ws.rs.ext.Provider;
++import java.io.ByteArrayInputStream;
++import java.io.ByteArrayOutputStream;
++import java.io.IOException;
++import java.io.InputStream;
++import java.lang.reflect.Method;
++import java.security.Principal;
++
++/**
++ * Filtre positionnant les données liées à l'utilisateur dans le MDC d'audit
++ */
++@Provider
++// default priority is 'USER' which is too late in the filter processing chain :
++// If authorization has rejected the request, this filter is NOT called
++// => setting Priority *before* AUTHORIZATION
++// So added '+1' to be executed after setting ApiSecurityContext
++@Priority(Priorities.AUTHENTICATION + 1)
++public class AuditRequestFilter implements ContainerRequestFilter {
++
++    private Logger logger = LoggerFactory.getLogger(getClass());
++
++    public static final String AUDITABLE_ENTITY = "entity";
++
++    @Context
++    private ResourceInfo resourceInfo;
++
++    @Context
++    SecurityContext securityContext;
++
++    @Override
++    public void filter(ContainerRequestContext requestContext) throws IOException {
++        defineMDCUser();
++        defineMDCResource();
++        defineMDCAction();
++
++        MDC.put("entity", getEntityBody(requestContext));
++
++    }
++
++    /**
++     * Extrait la représentation sous forme de chaine de caractère du contexte lors
++     * de l'appel d'une ressource Jersey
++     * @param requestContext
++     * @return Représentation de l'entité envoyée à la resource Jersey
++     */
++    private String getEntityBody(ContainerRequestContext requestContext)
++    {
++        ByteArrayOutputStream out = new ByteArrayOutputStream();
++        InputStream in = requestContext.getEntityStream();
++
++        final StringBuilder b = new StringBuilder();
++        try
++        {
++            ReaderWriter.writeTo(in, out);
++
++            byte[] requestEntity = out.toByteArray();
++            if (requestEntity.length == 0)
++            {
++                b.append("");//.append("\n");
++            }
++            else
++            {
++                b.append(new String(requestEntity));//.append("\n");
++            }
++            requestContext.setEntityStream( new ByteArrayInputStream(requestEntity) );
++
++        } catch (IOException ex) {
++            logger.error("Erreur lors de la récupération de l'entité lors d'Audit d'une action ",ex);
++        }
++        return b.toString();
++    }
++
++
++
++    private void defineMDCUser() {
++        Principal user = securityContext.getUserPrincipal();
++        if (user == null)
++            return;
++
++        MDC.put("user", user.getName());
++    }
++
++    private void defineMDCResource() {
++        Class<?> resourceClass = resourceInfo.getResourceClass();
++        if (resourceClass == null)
++            return;
++
++        MDC.put("resource", resourceClass.getSimpleName());
++    }
++
++    private void defineMDCAction() {
++        Method resourceMethod = resourceInfo.getResourceMethod();
++        if (resourceMethod == null)
++            return;
++
++        MDC.put("action", resourceMethod.getName());
++    }
++}
+Index: owasp-jersey/src/main/java/io/github/javathought/devoxx/filters/AuditResponseFilter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- owasp-jersey/src/main/java/io/github/javathought/devoxx/filters/AuditResponseFilter.java	(date 1523101305000)
++++ owasp-jersey/src/main/java/io/github/javathought/devoxx/filters/AuditResponseFilter.java	(date 1523101305000)
+@@ -0,0 +1,47 @@
++package io.github.javathought.devoxx.filters;
++
++import org.slf4j.*;
++
++import javax.ws.rs.HttpMethod;
++import javax.ws.rs.container.ContainerRequestContext;
++import javax.ws.rs.container.ContainerResponseContext;
++import javax.ws.rs.container.ContainerResponseFilter;
++import javax.ws.rs.container.ResourceInfo;
++import javax.ws.rs.core.Context;
++import javax.ws.rs.core.Response;
++import javax.ws.rs.ext.Provider;
++import java.io.IOException;
++
++
++/**
++ * Filtre réalisant les actions d'audit suite au traitement d'une requête utilisateur.
++ * Seules les réponses portant un code de type 'succès' (2xx) provoquent une trace d'audit.
++ */
++@Provider
++public class AuditResponseFilter implements ContainerResponseFilter {
++
++    private Logger logger = LoggerFactory.getLogger(getClass());
++    public static final Marker AUDIT_MARKER = MarkerFactory.getMarker("AUDIT");
++
++
++    @Context
++    private ResourceInfo resourceInfo;
++
++    @Override
++    public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext)
++            throws IOException {
++        
++        try {
++            String method = requestContext.getMethod();
++            String auditProfileHeader = requestContext.getHeaderString("Audit-Profile");
++
++                if (responseContext.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL) {
++                    logger.info(AUDIT_MARKER, "action succeeded (status '{}')", responseContext.getStatus());
++                } else {
++                    logger.info(AUDIT_MARKER, "action failed (status '{}')", responseContext.getStatus());
++                }
++        } finally {
++            MDC.clear();
++        }
++    }
++}
