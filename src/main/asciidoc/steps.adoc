@@ -511,6 +511,17 @@ Utilisez le site de hacker sous le répertoire `owasp-hacker` pour faire une act
 
 Ajoutez une protection contre les attaques CSRF :
 
+Les 4 méthodes de protections contre les attaques CSRF sont :
+
+ . Synchronizer (CSRF) Tokens (requires session state)
+ . Double Cookie Defense ( Cookie XSRF-TOKEN -> Header X-XSRF-TOKEN )
+ . Encrypted Token Pattern
+ . Custom Header : X-Requested-With: XMLHttpRequest
+
+Angular gère nativement la 2^e^ méthode. Il ne reste donc qu'à le gérer côté serveur :
+
+- Générez un cookie (sans l'attribut html only !)
+- Sur les requêtes concernez, contrôlez la correspondance entre le cookie reçu et le header renvoyé par le client.
 
 == click jacking  et headers
 
