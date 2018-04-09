@@ -1,5 +1,7 @@
 package io.github.javathought.devoxx.model;
 
+import org.glassfish.jersey.internal.util.Base64;
+
 /**
  * Credentials used by user to login on basic authentication
  */
@@ -22,5 +24,9 @@ public class Credentials {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String encode() {
+        return Base64.encodeAsString(username + ":" + password);
     }
 }
