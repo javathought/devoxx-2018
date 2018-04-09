@@ -11,7 +11,7 @@
 
     <modules>
         <module>owasp-jersey</module>
-        <module>hackertools</module>
+        <!--<module>hackertools</module>-->
         <!--<module>integration</module>-->
     </modules>
 
