@@ -1,0 +1,81 @@
+Index: owasp-jersey/src/main/java/io/github/javathought/devoxx/filters/SecurityFilter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- owasp-jersey/src/main/java/io/github/javathought/devoxx/filters/SecurityFilter.java	(revision eff037de9f997a9b1123b077675dfe60dcbecf18)
++++ owasp-jersey/src/main/java/io/github/javathought/devoxx/filters/SecurityFilter.java	(date 1523252372000)
+@@ -13,10 +13,12 @@
+ import javax.ws.rs.WebApplicationException;
+ import javax.ws.rs.container.ContainerRequestContext;
+ import javax.ws.rs.container.ContainerRequestFilter;
++import javax.ws.rs.core.Cookie;
+ import javax.ws.rs.core.MultivaluedMap;
+ import javax.ws.rs.core.Response;
+ import java.io.IOException;
+ import java.util.List;
++import java.util.Map;
+ import java.util.StringTokenizer;
+ 
+ @Priority(Priorities.AUTHENTICATION)
+@@ -42,19 +44,19 @@
+     public void filter(ContainerRequestContext requestContext) throws IOException {
+ 
+         //Get request headers
+-        final MultivaluedMap<String, String> headers = requestContext.getHeaders();
++        final Map<String, Cookie> cookies = requestContext.getCookies();
+ 
+         //Fetch authorization header
+-        final List<String> authorization = headers.get(AUTHORIZATION_PROPERTY);
++        final Cookie authorization = cookies.get(AUTHORIZATION_PROPERTY);
+ 
+         LOG.debug("Auth = {}", authorization);
+ 
+         //If no authorization information present; block access
+-        if(! (authorization == null || authorization.isEmpty()))
++        if(! (authorization == null))
+         {
+ 
+             //Get encoded username and password
+-            final String encodedUserPassword = authorization.get(0).replaceFirst(AUTHENTICATION_SCHEME + " ", "");
++            final String encodedUserPassword = authorization.getValue().replaceFirst(AUTHENTICATION_SCHEME + " ", "");
+ 
+             //Decode username and password
+             String usernameAndPassword = new String(Base64.decode(encodedUserPassword.getBytes()));;
+Index: owasp-jersey/src/main/java/io/github/javathought/devoxx/resources/AuthenticateResource.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- owasp-jersey/src/main/java/io/github/javathought/devoxx/resources/AuthenticateResource.java	(revision eff037de9f997a9b1123b077675dfe60dcbecf18)
++++ owasp-jersey/src/main/java/io/github/javathought/devoxx/resources/AuthenticateResource.java	(date 1523252372000)
+@@ -12,13 +12,16 @@
+ 
+ import javax.ws.rs.*;
+ import javax.ws.rs.core.Context;
++import javax.ws.rs.core.NewCookie;
+ import javax.ws.rs.core.Response;
+ import javax.ws.rs.core.SecurityContext;
+ 
+ import java.util.List;
+ 
+ import static io.github.javathought.devoxx.resources.AuthenticateResource.PATH;
++import static javax.ws.rs.core.Cookie.DEFAULT_VERSION;
+ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
++import static javax.ws.rs.core.NewCookie.DEFAULT_MAX_AGE;
+ import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
+ 
+ @Path(PATH)
+@@ -39,7 +42,11 @@
+             @ApiResponse(code = 401, message = "Wrong user or password")})
+     public Response authenticate(Credentials credentials) {
+         if (UsersDao.authenticate(credentials)) {
+-            return Response.ok().entity(new ResponseMessage(true, "user authenticated")).build();
++            StringBuilder auth = new StringBuilder().append("Basic ").append(credentials.encode());
++            return Response.ok()
++                    .cookie(new NewCookie("Authorization", auth.toString(), null, null,
++                            DEFAULT_VERSION, null, DEFAULT_MAX_AGE, null, true, true))
++            .entity(new ResponseMessage(true, "user authenticated")).build();
+         } else {
+             return Response.status(UNAUTHORIZED).entity(new ResponseMessage(false, "Username or password is incorrect")).build();
+         }

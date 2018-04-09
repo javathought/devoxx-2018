@@ -28,7 +28,7 @@
 :stylesdir: stylesheets
 :numbered:
 
- Préambule
+ Cette page présente un pas à pas de l'atelier, avec des indices afin de vous débloquer si nécessaire. Essayez de faire les exercices sans vous `spoiler` avec ces indices.
 
 
 = Introduction
@@ -37,10 +37,7 @@
 
 Le site de l'OWASP : https://www.owasp.org/index.php/Main_Page
 
-https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project#tab=Main[Top 10]
-
-Le document Top 10 propose une grille d'évaluation du risque pour chacun des items.
-Elle ne contient évidemment pas l'impact métier, d'où l, importance de l'analyse de risque.
+Lien utile : le pdf du https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project#tab=Main[Top 10]
 
 == Présentation de l'application
 
