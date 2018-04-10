@@ -1,5 +1,7 @@
 package io.github.javathought.devoxx.model;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -21,6 +23,15 @@ public class Todo {
     private String summary;
     private String description;
     private boolean publique;
+//    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
+//    @JsonSubTypes({
+//            @JsonSubTypes.Type(value = Dog.class, name = "Dog"),
+//
+//            @JsonSubTypes.Type(value = Cat.class, name = "Cat") }
+//    )
+    @JsonTypeInfo(use=JsonTypeInfo.Id.CLASS,
+            include=JsonTypeInfo.As.PROPERTY, property="@class")
+    private Object secret;
 
     private Todo() {
         // Needed to Unmarshall

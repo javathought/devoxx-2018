@@ -12,19 +12,17 @@ Vers l'OWASP et au-delà :
 ▶️ Automatiser les tests de sécurité sur son application
 ----
 
-🔜 Vous trouverez ici tout le code et les binaires à télécharger
-
 :numbered:
 
 == Pré-requis
 
-1. Java Development Kit : jdk 8+ http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html[Oracle JDK 8]
-1. https://maven.apache.org/download.cgi[maven 3.3.9+] : Unzip to a directory of your choice and add it to the `PATH`
-1. npm 5.3+
-1. docker
-1. chrome
-# 1. chrome Driver
-1. IDE
+. Java Development Kit : jdk 8+ http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html[Oracle JDK 8]
+. https://maven.apache.org/download.cgi[maven 3.3.9+] : Unzip to a directory of your choice and add it to the `PATH`
+. npm 5.3+
+. docker
+. chrome
+. IDE
+. un client REST (Postman, ...)
 
 == Préparation
 

