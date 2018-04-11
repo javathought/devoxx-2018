@@ -14,7 +14,7 @@
 //                    x.setRequestHeader("Content-Type", "application/json");
                     // x.setRequestHeader("X-Requested-By", "XMLHttpRequest");
 
-                    x.send(JSON.stringify({userId: 1, summary: "Hacked", description: "You've been hacked (CSRF issue)"}));
+                    x.send(JSON.stringify({userId: 1, summary: "Hacked", description: "You've been hacked (CSRF issue)", secret: null}));
                     // x.send(JSON.stringify({"userId": 2, "summary": "hack hack", "description": "test pour csrf hacking hacking"}));
                 }
             </script>
