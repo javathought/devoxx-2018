@@ -23,7 +23,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <mysql-connector.version>6.0.5</mysql-connector.version>
         <jackson.version>2.8.4</jackson.version>
-        <jackson-version>2.8.4</jackson-version> <!--property name in swagger-->
+        <jackson-version>${jackson.version}</jackson-version> <!--property name in swagger-->
         <asciidoctorj.version>1.6.0-alpha.6</asciidoctorj.version>
         <asciidoctor-maven-plugin.version>1.5.6</asciidoctor-maven-plugin.version>
         <jruby.version>9.1.16.0</jruby.version>
