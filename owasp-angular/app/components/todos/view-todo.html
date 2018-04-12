@@ -7,7 +7,7 @@
           <div class="form-group" ng-class="{'has-error' : todoForm.summary.$invalid}">
               <label for="title" class="col-sm-2">Titre *</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" name="summary" id="title" placeholder="Nom" ng-model="todo.summary"
+                <input type="text" class="form-control" name="summary" id="todo-title" placeholder="Nom" ng-model="todo.summary"
                 required ng-maxlength="50" pattern="[a-zA-Z0-9 \.-]+">
                 <ng-messages for="todoForm.summary.$error" role="alert">
                     <ng-message when="required" class="help-block">

@@ -55,6 +55,11 @@ module('devoxxApp', [
             url         : '/users/:id',
             templateUrl : 'app/components/users/view-user.html',
             controller  : 'ViewUserController'
+					})
+          .state('user-admin', {
+            url         : '/users/admin/:id',
+            templateUrl : 'app/components/users/user-admin.html',
+            controller  : 'ViewUserController'
           });
     $urlRouterProvider.otherwise('/');
 		// $locationProvider.html5Mode(true);

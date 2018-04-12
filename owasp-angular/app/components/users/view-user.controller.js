@@ -21,6 +21,12 @@ angular.module('devoxxApp.controllers').controller('ViewUserController', ['$scop
          	$scope.getBtnLabel = function() {
          		return ($scope.state == "new") ? "Créer" : "Modifier";
          	};
+
+            $scope.saveUserWithAdmin = function () {
+                $scope.admin = true;
+                $scope.saveUser();
+            };
+
          	$scope.saveUser = function() {
 
                 var index = $scope.user.roles.findIndex(function(element) {
