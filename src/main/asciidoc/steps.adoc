@@ -687,9 +687,26 @@ Les tags de cucumber permettent de présenter la couverture des risques owasp
 image::couverture_test.png[couverture owasp]
 
 
+= Pour aller encore plus loin
 
-== 2FA
+== 2FA : authentification à 2 facteurs
+Un des points sensibles de l'application est l'authentification qui peut être corrompue par plusieurs failles. C'est
+pourquoi de plus en plus de sites proposent l'authentification à 2 facteurs.
 
-== Reinit password
+Il existe 3 (ou 4 selon les interprétations) facteurs d'authentification :
+
+. Ce que vous savez : c'est le facteur utilisé dans cette application (votre mot de passe).
+. Ce que vous possédez : votre téléphone, un certificat client, une clé RSA (utilisé par Blizzard), ...
+. Ce que vous êtes : la biométrie (visage, empreinte digitale, rétinienne, pulsation cardiaque )
+ou ce que vous savez faire (votre façon de taper au clavier : était utilisé auparavant par `https://www.coursera.org`
+pour valider vos soumissions aux tests finaux des sessions. Parfois la distinction est faite entre ce que vous êtes et ce que vous savez faire (4 facteurs).
+
+Mettez en place un 2e facteur d'authentification.
+
+== Reinitialisation de mot de passe.
+
+La fonction de réinitialisation de mot de passe est souvent une faille d'un système d'authentification.
+
+Mettez en place un système de réinitialisation sécurisé.
 
 
