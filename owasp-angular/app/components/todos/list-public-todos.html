@@ -1,0 +1,57 @@
+<div class="row">
+
+    <legend>Liste des tâches</legend>
+
+
+    <div class="col-lg-6">
+
+        <div class="form-group  has-feedback">
+            <label class="control-label sr-only" for="inputSuccess5">Hidden label</label>
+            <input type="text" ng-model="search" class="form-control" id="inputSuccess5"
+                   aria-describedby="inputSuccess5Status">
+            <span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
+            <span id="inputSuccess5Status" class="sr-only">(success)</span>
+        </div>
+    </div><!-- /.col-lg-6 -->
+    <div class="col-lg-6 ">
+        <div class="form-actions pull-right">
+            <a class="btn btn-sm btn-primary" ng-href="#/todos/">
+                <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Créer une tâche</a>
+            <button type="button" ng-click="refresh()" class="btn btn-sm btn-default">
+                <span class="glyphicon glyphicon-refresh"></span>&nbsp;&nbsp;Rafraîchir
+            </button>
+        </div>
+    </div>
+
+
+</div>
+<div class="row" data-deferred-cloak>
+    <table class="table table-striped">
+        <thead>
+
+        <tr>
+            <th>Titre</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="todo in todos | filter : search">
+            <td>{{todo.summary}}</td>
+            <td><p ng-bind-html="trusted(todo.description)"></p></td>
+
+        </tr>
+        </tbody>
+        <tfoot/>
+    </table>
+</div>
+<!--  Warning : Use ng-model="$parent.currentPage" unless currentPage is always 1 as when reloading, total-items will be reset,
+      so, total-pages recalculated to 1 and watched, and currentPage reste to 1 as it can't be greater than total-pages
+      -->
+
+
+<div align="center" ng-show="todos.length == 0"
+     data-deferred-cloak>
+    <hr size="10" width="30%">
+    <strong>Aucun r&eacute;sultat ne correspond &agrave; vos crit&egrave;res</strong>
+    <hr size="10" width="30%">
+</div>
