@@ -23,6 +23,7 @@ Vers l'OWASP et au-delà :
 . chrome
 . IDE
 . un client REST (Postman, ...)
+. requestbin (https://github.com/Runscope/requestbin#readme) en version docker
 
 == Préparation
 

