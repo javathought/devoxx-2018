@@ -359,7 +359,7 @@ Un autre type d'attaque XXE existe. Essayez de l'exploiter sur la ressource `tod
 
 [id=reponse11,role=collapse]
 --
- Utilisez l'entity : `<!ENTITY xxe SYSTEM "file:///etc/passwd" >`
+ Utilisez l'entity : `<!ENTITY xxe SYSTEM "file:///etc/passwd" >
 --
 
 
@@ -475,6 +475,40 @@ Supprimez vos droits administrateurs puis essayez d'accéder et/ou modifier les 
 
 
 == Security Misconfiguration
+
+La configuration de production concerne souvent plus les `ops` que les `devs`.
+Quelle configuration est à changer dans ce cas-ci ?
+
+++++
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#reponse12" aria-expanded="false" aria-controls="collapseExample">
+  Solution 1
+</a>
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#astuce23" aria-expanded="false" aria-controls="collapseExample">
+  Indice 1
+</a>
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#reponse13" aria-expanded="false" aria-controls="collapseExample">
+  Indice 1
+</a>
+++++
+
+[id=reponse12,role=collapse]
+--
+ Le mot de passe de la base de données
+--
+
+[id=reponse23,role=collapse]
+--
+ Les développeurs doivent aussi communiquer la configuration durcie de leurs développements. Quelle partie du développement est
+ à désactiver en production
+--
+
+[id=reponse13,role=collapse]
+--
+ Il s'agit de la classe CrossDomainFilter que les développeurs ont mis en place pour pouvoir faire des tests à partir de SwaggerUI.
+ Rajoutez un paramètre extérieur au code pour condition le code de ce filtre.
+ Son paramétrage sera indiqué dans la documentation d'installation
+--
+
 
 
 == Insecure deserialization
