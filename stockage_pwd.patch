@@ -1,0 +1,348 @@
+Index: owasp-jersey/src/main/java/io/github/javathought/devoxx/security/PasswordStorage.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- owasp-jersey/src/main/java/io/github/javathought/devoxx/security/PasswordStorage.java	(date 1523720286000)
++++ owasp-jersey/src/main/java/io/github/javathought/devoxx/security/PasswordStorage.java	(date 1523720286000)
+@@ -0,0 +1,203 @@
++package io.github.javathought.devoxx.security;
++
++import java.security.SecureRandom;
++import javax.crypto.spec.PBEKeySpec;
++import javax.crypto.SecretKeyFactory;
++import java.math.BigInteger;
++import java.security.NoSuchAlgorithmException;
++import java.security.spec.InvalidKeySpecException;
++import javax.xml.bind.DatatypeConverter;
++
++public class PasswordStorage
++{
++
++    @SuppressWarnings("serial")
++    static public class InvalidHashException extends Exception {
++        public InvalidHashException(String message) {
++            super(message);
++        }
++        public InvalidHashException(String message, Throwable source) {
++            super(message, source);
++        }
++    }
++
++    @SuppressWarnings("serial")
++    static public class CannotPerformOperationException extends Exception {
++        public CannotPerformOperationException(String message) {
++            super(message);
++        }
++        public CannotPerformOperationException(String message, Throwable source) {
++            super(message, source);
++        }
++    }
++
++    public static final String PBKDF2_ALGORITHM = "PBKDF2WithHmacSHA1";
++
++    // These constants may be changed without breaking existing hashes.
++    public static final int SALT_BYTE_SIZE = 24;
++    public static final int HASH_BYTE_SIZE = 18;
++    public static final int PBKDF2_ITERATIONS = 64000;
++
++    // These constants define the encoding and may not be changed.
++    public static final int HASH_SECTIONS = 5;
++    public static final int HASH_ALGORITHM_INDEX = 0;
++    public static final int ITERATION_INDEX = 1;
++    public static final int HASH_SIZE_INDEX = 2;
++    public static final int SALT_INDEX = 3;
++    public static final int PBKDF2_INDEX = 4;
++
++    public static String createHash(String password)
++        throws CannotPerformOperationException
++    {
++        return createHash(password.toCharArray());
++    }
++
++    public static String createHash(char[] password)
++        throws CannotPerformOperationException
++    {
++        // Generate a random salt
++        SecureRandom random = new SecureRandom();
++        byte[] salt = new byte[SALT_BYTE_SIZE];
++        random.nextBytes(salt);
++
++        // Hash the password
++        byte[] hash = pbkdf2(password, salt, PBKDF2_ITERATIONS, HASH_BYTE_SIZE);
++        int hashSize = hash.length;
++
++        // format: algorithm:iterations:hashSize:salt:hash
++        String parts = "sha1:" +
++            PBKDF2_ITERATIONS +
++            ":" + hashSize +
++            ":" +
++            toBase64(salt) +
++            ":" +
++            toBase64(hash);
++        return parts;
++    }
++
++    public static boolean verifyPassword(String password, String correctHash)
++        throws CannotPerformOperationException, InvalidHashException
++    {
++        return verifyPassword(password.toCharArray(), correctHash);
++    }
++
++    public static boolean verifyPassword(char[] password, String correctHash)
++        throws CannotPerformOperationException, InvalidHashException
++    {
++        // Decode the hash into its parameters
++        String[] params = correctHash.split(":");
++        if (params.length != HASH_SECTIONS) {
++            throw new InvalidHashException(
++                "Fields are missing from the password hash."
++            );
++        }
++
++        // Currently, Java only supports SHA1.
++        if (!params[HASH_ALGORITHM_INDEX].equals("sha1")) {
++            throw new CannotPerformOperationException(
++                "Unsupported hash type."
++            );
++        }
++
++        int iterations = 0;
++        try {
++            iterations = Integer.parseInt(params[ITERATION_INDEX]);
++        } catch (NumberFormatException ex) {
++            throw new InvalidHashException(
++                "Could not parse the iteration count as an integer.",
++                ex
++            );
++        }
++
++        if (iterations < 1) {
++            throw new InvalidHashException(
++                "Invalid number of iterations. Must be >= 1."
++            );
++        }
++
++
++        byte[] salt = null;
++        try {
++            salt = fromBase64(params[SALT_INDEX]);
++        } catch (IllegalArgumentException ex) {
++            throw new InvalidHashException(
++                "Base64 decoding of salt failed.",
++                ex
++            );
++        }
++
++        byte[] hash = null;
++        try {
++            hash = fromBase64(params[PBKDF2_INDEX]);
++        } catch (IllegalArgumentException ex) {
++            throw new InvalidHashException(
++                "Base64 decoding of pbkdf2 output failed.",
++                ex
++            );
++        }
++
++
++        int storedHashSize = 0;
++        try {
++            storedHashSize = Integer.parseInt(params[HASH_SIZE_INDEX]);
++        } catch (NumberFormatException ex) {
++            throw new InvalidHashException(
++                "Could not parse the hash size as an integer.",
++                ex
++            );
++        }
++
++        if (storedHashSize != hash.length) {
++            throw new InvalidHashException(
++                "Hash length doesn't match stored hash length."
++            );
++        }
++
++        // Compute the hash of the provided password, using the same salt, 
++        // iteration count, and hash length
++        byte[] testHash = pbkdf2(password, salt, iterations, hash.length);
++        // Compare the hashes in constant time. The password is correct if
++        // both hashes match.
++        return slowEquals(hash, testHash);
++    }
++
++    private static boolean slowEquals(byte[] a, byte[] b)
++    {
++        int diff = a.length ^ b.length;
++        for(int i = 0; i < a.length && i < b.length; i++)
++            diff |= a[i] ^ b[i];
++        return diff == 0;
++    }
++
++    private static byte[] pbkdf2(char[] password, byte[] salt, int iterations, int bytes)
++        throws CannotPerformOperationException
++    {
++        try {
++            PBEKeySpec spec = new PBEKeySpec(password, salt, iterations, bytes * 8);
++            SecretKeyFactory skf = SecretKeyFactory.getInstance(PBKDF2_ALGORITHM);
++            return skf.generateSecret(spec).getEncoded();
++        } catch (NoSuchAlgorithmException ex) {
++            throw new CannotPerformOperationException(
++                "Hash algorithm not supported.",
++                ex
++            );
++        } catch (InvalidKeySpecException ex) {
++            throw new CannotPerformOperationException(
++                "Invalid key spec.",
++                ex
++            );
++        }
++    }
++
++    private static byte[] fromBase64(String hex)
++        throws IllegalArgumentException
++    {
++        return DatatypeConverter.parseBase64Binary(hex);
++    }
++
++    private static String toBase64(byte[] array)
++    {
++        return DatatypeConverter.printBase64Binary(array);
++    }
++
++}
+\ No newline at end of file
+Index: owasp-jersey/src/main/java/io/github/javathought/devoxx/dao/UsersDao.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- owasp-jersey/src/main/java/io/github/javathought/devoxx/dao/UsersDao.java	(date 1523719977000)
++++ owasp-jersey/src/main/java/io/github/javathought/devoxx/dao/UsersDao.java	(date 1523721067000)
+@@ -3,6 +3,7 @@
+ import io.github.javathought.devoxx.model.Credentials;
+ import io.github.javathought.devoxx.model.Role;
+ import io.github.javathought.devoxx.model.User;
++import io.github.javathought.devoxx.security.PasswordStorage;
+ import org.jooq.Record;
+ import org.jooq.impl.DSL;
+ import org.slf4j.Logger;
+@@ -116,27 +117,23 @@
+     }
+ 
+     public static boolean authenticate(Credentials credentials) {
++        boolean authenticated = false;
++        Optional<String> hashOpt = DSL.using(conn).select(USERS.PASSWORD).from(USERS)
++                .where(USERS.NAME.eq(credentials.getUsername()))
++                .fetchOptional().map(r -> r.get(USERS.PASSWORD));
+ 
+-        /*
+-        Hack with :
+-        {
+-            "username": "admin",
+-            "password": "e' or '1' = '1"
++        if (hashOpt.isPresent()) {
++            try {
++                authenticated = PasswordStorage.verifyPassword(credentials.getPassword(), hashOpt.get());
++            } catch (PasswordStorage.InvalidHashException | PasswordStorage.CannotPerformOperationException e) {
++                LOG.error("Erreur to auth {}", e.getLocalizedMessage());
++                authenticated = false;
++            }
+         }
+-        */
+ 
+-        return ! DSL.using(conn)
+-                .fetch("SELECT 1 FROM devoxx_tia.users WHERE name = '" + credentials.getUsername()
+-                + "' AND password = '" + credentials.getPassword()
+-                        + "'").isEmpty();
++        return authenticated;
++    }
+ 
+-/*
+-        return DSL.using(conn).selectFrom(USERS)
+-                .where(USERS.NAME.eq(credentials.getUsername())
+-                        .and(USERS.PASSWORD.eq(User.getHash(credentials.getPassword()))))
+-                .fetchOptional().isPresent();
+-*/
+-    }
+ 
+     public static User mapUser(Record record) {
+         User user = new User(record.get(USERS.ID),
+@@ -145,7 +142,7 @@
+         DSL.using(conn).select().from(USER_ROLES)
+                 .join(ROLES).on(ROLES.ID.eq(USER_ROLES.ROLE_ID))
+                 .where(USER_ROLES.USER_ID.eq(user.getId()))
+-        .fetch().forEach(r -> user.getRoles().add(new Role(r.get(ROLES.NAME))));
++                .fetch().forEach(r -> user.getRoles().add(new Role(r.get(ROLES.NAME))));
+ 
+ 
+ 
+Index: owasp-jersey/src/main/java/io/github/javathought/devoxx/model/User.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- owasp-jersey/src/main/java/io/github/javathought/devoxx/model/User.java	(date 1523719977000)
++++ owasp-jersey/src/main/java/io/github/javathought/devoxx/model/User.java	(date 1523721067000)
+@@ -2,10 +2,11 @@
+ 
+ import com.fasterxml.jackson.annotation.JsonIgnore;
+ import com.fasterxml.jackson.annotation.JsonProperty;
+-import org.apache.commons.codec.digest.DigestUtils;
++import io.github.javathought.devoxx.security.PasswordStorage;
+ import org.apache.commons.lang3.builder.ToStringBuilder;
+ 
+ import javax.security.auth.Subject;
++import javax.xml.bind.ValidationException;
+ import javax.xml.bind.annotation.XmlAccessType;
+ import javax.xml.bind.annotation.XmlAccessorType;
+ import javax.xml.bind.annotation.XmlRootElement;
+@@ -15,12 +16,8 @@
+ import java.security.NoSuchAlgorithmException;
+ import java.security.Principal;
+ import java.util.ArrayList;
+-import java.util.Arrays;
+ import java.util.List;
+ import java.util.UUID;
+-import java.util.stream.Collectors;
+-
+-import static org.apache.commons.codec.digest.DigestUtils.sha256Hex;
+ 
+ /**
+  *
+@@ -46,7 +43,7 @@
+     public User(long id,
+                 UUID uuid,
+                 String name,
+-                String key) {
++                String key) throws ValidationException {
+         this.id = id;
+         this.uuid = uuid;
+         this.name = name;
+@@ -88,11 +85,11 @@
+     }
+ 
+     public String getKey() {
+-        return "";
++        return key;
+     }
+ 
+     @JsonProperty
+-    public void setKey(String key) {
++    public void setKey(String key) throws ValidationException {
+         if (key.isEmpty()) {
+             this.key = "";
+         } else {
+@@ -137,8 +134,12 @@
+                 .toString();
+     }
+ 
+-    public static String getHash(String password) {
+-        return DigestUtils.sha1Hex(password);
++    public static String getHash(String password) throws ValidationException {
++        try {
++            return PasswordStorage.createHash(password);
++        } catch (PasswordStorage.CannotPerformOperationException e) {
++            throw new ValidationException("Unable to set encrypted password");
++        }
+     }
+ 
+ }

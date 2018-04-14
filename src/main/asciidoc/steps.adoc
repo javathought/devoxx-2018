@@ -100,34 +100,6 @@ Utilisez le mot de passe suivant : `e' or '1' = '1`
 Utilisez le DSL de Jooq pour les requêtes dynamiques. Outre le fait de générer des requêtes paramétrées, il les génère
 de manière "type safe".
 
-== Se connecter à l'application en tant qu'administrateur en devinant le mot de passe
-
-* Énoncé
-
-Le compte de l'administrateur n'a pas été correctement initialisé et son mot de passe est *très* faible (oui ça arrive).
-
-++++
-<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#astuce3" aria-expanded="false" aria-controls="collapseExample">
-  Indice 1
-</a>
-<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#reponse2" aria-expanded="false" aria-controls="collapseExample">
-  Solution
-</a>
-++++
-
-[id=astuce3,role=collapse]
---
- Le mot de passe est égal au nom d'utilisateur
---
-[id=reponse2,role=collapse]
---
- Essayez avec admin/admin
---
-
-* Correction
-
-Changez le mot de passe de l'administrateur
-
 == Se connecter avec le compte d'un utilisateur de l'application
 
 Des pirates ont diffusé un extrait des comptes des utilisateurs d'un site sur lequel ils se sont introduits.
@@ -257,6 +229,34 @@ lors de la mise à jour du mot de passe.
 [NOTE]
 En cible vous pouvez récupérer une base de hash ayant fuité par exemple sur https://crackstation.net/buy-crackstation-wordlist-password-cracking-dictionary.htm :
 1,493,677,782 entrées, 15GB
+
+== Se connecter à l'application en tant qu'administrateur en devinant le mot de passe
+
+* Énoncé
+
+Le compte de l'administrateur n'a pas été correctement initialisé et son mot de passe est *très* faible (oui ça arrive).
+
+++++
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#astuce3" aria-expanded="false" aria-controls="collapseExample">
+  Indice 1
+</a>
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#reponse2" aria-expanded="false" aria-controls="collapseExample">
+  Solution
+</a>
+++++
+
+[id=astuce3,role=collapse]
+--
+ Le mot de passe est égal au nom d'utilisateur
+--
+[id=reponse2,role=collapse]
+--
+ Essayez avec admin/admin
+--
+
+* Correction
+
+Changez le mot de passe de l'administrateur
 
 == Obtenez les informations de session de l'administrateur
 
