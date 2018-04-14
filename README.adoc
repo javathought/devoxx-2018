@@ -102,6 +102,5 @@ mvn generate-resources
 
 == Allons-y
 
-Le Lab peut commencer
-link:steps.html[Pas à pas]
-
+Le Lab peut commencer : suivez le pas à pas en `html` sous `target/generated-docs/steps.html`
+ (Les indices sont masqués dans la version html pour ne pas être dévoilés tout de suite).
