@@ -301,7 +301,8 @@ utilisez le code suivant dans la description de la todo (en remplaçant l'id 1lw
 
 Connaissez-vous les xml bomb ? Quelle est l'empreinte mémoire du fichier xml ci-dessous ?
 Risquez vous un DoS ?
-Essayez de l'injecter dans l'application (par votre client REST).
+Essayez de l'injecter dans l'application (par votre client REST) sur la ressource `/todos` avec votre client REST.
+Jusqu'à combien lol pouvez-vous injecter ?
 
 ----
 <?xml version="1.0" encoding="UTF-8"?>
@@ -327,7 +328,40 @@ Essayez de l'injecter dans l'application (par votre client REST).
 </todo>
 ----
 
-Un autre type d'attaque XXE existe. Essayez de l'exploiter sur la ressource todos/xml.
+++++
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#astuce21" aria-expanded="false" aria-controls="collapseExample">
+  Indice 1
+</a>
+++++
+
+[id=astuce21,role=collapse]
+--
+ N'oubliez pas d'ajouter les headers nécessaires : pour vous authentifier et le format de réponse attendu (`xml`)
+--
+
+
+Un autre type d'attaque XXE existe. Essayez de l'exploiter sur la ressource `todos/xml`. Cette fois-ci le format de payload est en text (le résultat tojours en xml).
+
+
+++++
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#astuce22" aria-expanded="false" aria-controls="collapseExample">
+  Indice 1
+</a>
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#reponse11" aria-expanded="false" aria-controls="collapseExample">
+  Solution
+</a>
+++++
+
+[id=astuce22,role=collapse]
+--
+ L'objectif est de récupérer un fichier du serveur, comme /etc/passwd ;)
+--
+
+[id=reponse11,role=collapse]
+--
+ Utilisez l'entity : `<!ENTITY xxe SYSTEM "file:///etc/passwd" >`
+--
+
 
 == Augmentez vos privilèges
 
