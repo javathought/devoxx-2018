@@ -673,8 +673,62 @@ Angular gère nativement la 2^e^ méthode. Il ne reste donc qu'à le gérer côt
 - Générez un cookie (sans l'attribut html only !)
 - Sur les requêtes concernez, contrôlez la correspondance entre le cookie reçu et le header renvoyé par le client.
 
-== click jacking  et headers
+== click jacking
 
+Allez à la page `https://localhost:9095/jack.html`. Il s'agit d'un formulaire de souscription
+à une newsletter.
+
+Validez le formulaire ...
+
+... et allez regarder les propriétés de l'utilisateur john.doe.
+
+Il est dorénavant administrateur !
+
+Protégez votre application de ce type d'attaque.
+
+++++
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#astuce24" aria-expanded="false" aria-controls="collapseExample">
+  Indice 1
+</a>
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#astuce25" aria-expanded="false" aria-controls="collapseExample">
+  Indice 1
+</a>
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#astuce26" aria-expanded="false" aria-controls="collapseExample">
+  Indice 1
+</a>
+<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#reponse15" aria-expanded="false" aria-controls="collapseExample">
+  Indice 1
+</a>
+++++
+
+[id=astuce24,role=collapse]
+--
+ Ajouter les bons `Content Security Policy`
+--
+
+[id=astuce25,role=collapse]
+--
+ Vous pouvez les déployer par header http ou balises html meta
+--
+
+[id=astuce26,role=collapse]
+--
+ La protection contre les iframe encapsulante n'est pas disponible en balise meta. Il faut
+ configurer le serveur pour émettre l'option en header.
+--
+
+[id=reponse15,role=collapse]
+--
+Ajoutez le code suivant en module middleware de `lite-server`, dans le fichier `bs-config.js`
+
+      2: function (req, res, next) {
+    res.setHeader('Content-Security-Policy', 'frame-ancestors \'none\'');
+    next(); }
+--
+
+Complérez le paramétrage sur les autres types de configuration disponible.
+
+NOTE: Sous angular 2+, ng serve ne permet pas de positionner ces headers ni, donc, de tester
 
 
 == ajouter des tests
