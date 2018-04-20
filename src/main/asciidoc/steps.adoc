@@ -733,7 +733,7 @@ NOTE: Sous angular 2+, ng serve ne permet pas de positionner ces headers ni, don
 
 == ajouter des tests
 
-Le module `owasp-jersey` contient une structure de tests utilisant `Cucumber` et `rest-assured. Enrichissez-là
+Le module `owasp-jersey` contient une structure de tests utilisant `Cucumber` et `rest-assured`. Enrichissez-là
 pour faire un rapport de tests de sécurité.
 
 Les tags de cucumber permettent de présenter la couverture des risques owasp
