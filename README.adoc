@@ -28,7 +28,7 @@ Vers l'OWASP et au-delà :
 == Préparation
 
 ----
-git clone https:://github.com/javathought/devoxx-2018
+git clone https://github.com/javathought/devoxx-2018
 ----
 
 Vous pouvez importer le code dans votre IDE préféré comme un projet Maven -- __Référez vous à la documentation de votre IDE pour savoir comment l'importer__ --.
